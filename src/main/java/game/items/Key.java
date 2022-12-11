@@ -11,7 +11,7 @@ public class Key extends Item implements Printable
 
     public Key(String name, int roomId)
     {
-       super(name, "en nyckel som öppnar rum nummer " + roomId);
+       super(name, "En nyckel som öppnar rum nummer " + roomId);
        this.roomId = roomId;
     }
 

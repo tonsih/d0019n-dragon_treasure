@@ -1,6 +1,7 @@
 package game.battle;
 
 import game.data.Command;
+import game.data.K;
 import game.data.PrintCollection;
 import game.entities.Entity;
 import game.entities.Monster;
@@ -89,6 +90,8 @@ public class Battle
             System.out.println();
             printBattleWeaponOptions();
             printAttackOption();
+
+            System.out.println();
             Dungeon.printEscapeOption();
             System.out.println();
 
@@ -96,7 +99,7 @@ public class Battle
             String ansStr = this.scanner.nextLine();
 
             ConsoleCleaner.clearConsole();
-            PrintCollection.printLines();
+            PrintCollection.printLinesWithPlusCorners();
 
             if (ansStr.isBlank()) continue;
 
@@ -187,11 +190,14 @@ public class Battle
     {
         ConsoleCleaner.clearConsole();
 
-        PrintCollection.printLines();
-        System.out.printf("%s besegrar %s!\n",
+        PrintCollection.printLinesWithPlusCorners();
+        String winsString = String.format("| %s besegrar %s!",
                 winner.getName(),
                 loser.getName());
-        PrintCollection.printLines();
+        System.out.print(winsString);
+        PrintCollection.printAmountOfSpaces(K.AMOUNT_OF_LINES-winsString.length());
+        System.out.println(" |");
+        PrintCollection.printLinesWithPlusCorners();
     }
 
 }

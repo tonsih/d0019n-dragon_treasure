@@ -114,7 +114,7 @@ public class DragonTreasure implements K
                 new Door(e, true)}, new HealthPotion());
 
         this.roomArr[5] = new Room(new Door[]{new Door(e)},
-                new Keyring(new Key (6)),
+                new Keyring(new Key (7)),
                 new SaltaPinnar(),
                 new Item[]{new Sword()},
                 new Monster());

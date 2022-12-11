@@ -113,7 +113,7 @@ public class Dungeon implements K
 
             ConsoleCleaner.clearConsole();
 
-            PrintCollection.printLines();
+            PrintCollection.printLinesWithPlusCorners();
 
 
 
@@ -251,7 +251,7 @@ public class Dungeon implements K
 
         while (true)
         {
-            PrintCollection.printLines();
+            PrintCollection.printLinesWithPlusCorners();
 
             String enterCaveOptionString = String.format("Gå in i grottan [%c]", this.entrancePos);
             String quitGameOptionString = String.format("Avsluta spelet [%c]", Command.EXIT_GAME.commandValue);
@@ -291,7 +291,7 @@ public class Dungeon implements K
 
         }
 
-        PrintCollection.printLines();
+        PrintCollection.printLinesWithPlusCorners();
         System.out.println(K.LEFT_CAVE_MSG);
         return true;
     }
@@ -372,10 +372,9 @@ public class Dungeon implements K
         {
 
             System.out.printf(
-                    "Du har en oanvänt %s på dig. Du kan förbruka " +
-                            " [%c]\n",
-                    StringManipulator.stripEnOrEtt(consumable.getName()
-                            .toLowerCase()),
+                    "Du kan förbruka %s [%c]\n",
+                    consumable.getName()
+                            .toLowerCase(),
                     consumable.getUseCommand());
         }
 
@@ -446,17 +445,6 @@ public class Dungeon implements K
                 Command.EXIT_GAME.commandValue);
     }
 
-
-    private boolean processPickedUpKeyring()
-    {
-        if (this.currentRoom.getKeyring().size() > 0)
-        {
-            this.currentRoom.getKeyring().applyEffect(this.player);
-            this.currentRoom.removeKeyring();
-            return true;
-        }
-        return false;
-    }
 
 
     private void processPickedUpItems()
