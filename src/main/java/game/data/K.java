@@ -6,8 +6,6 @@ import java.util.Map;
 public interface K
 {
 
-    boolean ANIMATE_TEXT = true;
-
     //  Stores the value for amount of rooms
     int ROOM_AMOUNT = 7;
 

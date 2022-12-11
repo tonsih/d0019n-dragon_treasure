@@ -1,10 +1,6 @@
 package game.data;
 
-import utils.StringManipulator;
-
 import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.Scanner;
 
 public class PrintCollection
 {
@@ -122,6 +118,24 @@ public class PrintCollection
             System.out.print("-");
         }
         System.out.println();
+    }
+
+    public static void printLinesWithPlusCorners(int amount)
+    {
+        System.out.print("+");
+        for (int i = 0; i < amount; i++)
+        {
+            System.out.print("-");
+        }
+        System.out.println("+");
+    }
+
+    public static void printAmountOfSpaces(int amountOfSpaces)
+    {
+        for (int i = 0; i < amountOfSpaces; i++)
+        {
+            System.out.print(" ");
+        }
     }
 
     public static void printLines()

@@ -110,16 +110,4 @@ public class Player extends Entity implements K
         System.out.println(this.name);
     }
 
-
-    public void printHPString()
-    {
-        System.out.printf("%d HP\n", this.getHealthPoints());
-    }
-
-
-    public void printMaxDMGString()
-    {
-        System.out.printf("%d Max. DMG\n", this.getMaxDamage());
-    }
-
 }
