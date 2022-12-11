@@ -100,7 +100,7 @@ public class Room implements K
 
     public Room(Door[] doorsArr, Keyring keyring, Treasure treasure, Item[] items, Monster monster)
     {
-        this(null, doorsArr, null, treasure,
+        this(null, doorsArr, keyring, treasure,
                 new ArrayList<>(Arrays.asList(items)), monster);
     }
 

@@ -1,6 +1,7 @@
 package game.entities;
 
 import game.data.K;
+import game.data.PrintCollection;
 import game.items.treasures.Treasure;
 
 import java.util.ArrayList;
@@ -47,7 +48,7 @@ public class Player extends Entity implements K
         return this.treasures;
     }
 
-    private int getTreasuresTotalValue()
+    public int getTreasuresTotalValue()
     {
         int totalValue = 0;
         for (Treasure treasure : this.treasures)
@@ -58,7 +59,7 @@ public class Player extends Entity implements K
     }
 
 
-    private String treasuresString()
+    public String treasuresString()
     {
         String treasureStr = "";
 
@@ -109,5 +110,99 @@ public class Player extends Entity implements K
     {
         System.out.println(this.name);
     }
+
+    public int getMonstersKilled()
+    {
+        return this.totalMonstersKilled;
+    }
+
+
+    public void printPlayerInfo(String title, boolean treasuresIncluded)
+    {
+
+        String[] containers = new String[]
+                {
+                        String.format("| %s ", title),
+                        String.format("| Name: %s", this.name),
+                        String.format("| HP: %d", this.healthPoints),
+                        String.format("| Max DMG: %d", this.maxDamage),
+                        String.format("| Dödade monsters: %d", this.totalMonstersKilled)
+                };
+
+        if (treasuresIncluded)
+        {
+
+            String[] tempContainers;
+            int tempLength = containers.length+this.treasures.size();
+
+            if (this.treasures.size() > 0)
+            {
+                tempContainers = new String[tempLength+4];
+                tempContainers[tempContainers.length-2] = "|";
+                tempContainers[tempContainers.length-1] = String.format("| Total värde: %d Guld", this.getTreasuresTotalValue());
+            }
+            else tempContainers = new String[tempLength+2];
+
+            tempContainers[containers.length] = "|";
+            tempContainers[containers.length+1] = this.treasures.size() > 0 ? "| Skatter:" : "| Inga Skatter";
+
+            for (int i = 0; i < containers.length; i++)
+            {
+                tempContainers[i] = containers[i];
+            }
+
+            for (int i = 0; i < this.treasures.size(); i++)
+            {
+                Treasure treasure = this.treasures.get(i);
+                tempContainers[containers.length+2+i] = String.format("| %s (Värde: %d Guld)", treasure.getName(), treasure.getGoldValue());
+            }
+
+
+            containers = tempContainers;
+
+        }
+
+        String containerEnd = " |";
+
+        int boxWidth = containers[0].length() + containerEnd.length();
+
+        for (String s : containers)
+        {
+            if (s.length() + containerEnd.length() > boxWidth)
+            {
+                boxWidth = s.length() + containerEnd.length();
+            }
+        }
+
+        PrintCollection.printLinesWithPlusCorners(boxWidth);
+
+        int amountOfSpaces = boxWidth - containers[0].length();
+
+        System.out.print(containers[0]);
+        PrintCollection.printAmountOfSpaces(amountOfSpaces);
+        System.out.println(containerEnd);
+
+        PrintCollection.printLinesWithPlusCorners(boxWidth);
+
+        for (int i = 1; i < containers.length; i++)
+        {
+            amountOfSpaces = boxWidth - containers[i].length();
+            System.out.print(containers[i]);
+            PrintCollection.printAmountOfSpaces(amountOfSpaces);
+            System.out.println(containerEnd);
+        }
+
+        PrintCollection.printLinesWithPlusCorners(boxWidth);
+
+    }
+
+
+    public void printPlayerInfo(String title)
+    {
+        printPlayerInfo(title, false);
+    }
+
+
+
 
 }

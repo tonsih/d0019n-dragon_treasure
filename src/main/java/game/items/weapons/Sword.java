@@ -26,7 +26,7 @@ public class Sword extends Weapon implements K, Printable
         entity.setMaxDamage(entity.getMaxDamage() + this.increaseDamage);
 
         System.out.printf(
-                "%s DMG ökar med %d (Ny Total DMG: %d DMG)" +
+                "\n%s DMG ökar med %d (Ny Total DMG: %d DMG)" +
                         "\n",
                 entity.getName(),
                 this.increaseDamage,

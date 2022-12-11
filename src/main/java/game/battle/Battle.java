@@ -52,10 +52,11 @@ public class Battle
 
     public boolean newBattle()
     {
+        TimeManipulator.wait(1000);
         System.out.printf("%s dyker upp\n", this.monster.getMonsterDesc());
         TimeManipulator.wait(1000);
         this.monster.printObject();
-        TimeManipulator.wait(500);
+        TimeManipulator.wait(1000);
 
         while (true)
         {
@@ -71,7 +72,11 @@ public class Battle
                 return false;
             }
 
-            if (!this.battlePlayerMenu()) return false;
+            if (!this.battlePlayerMenu())
+            {
+                ConsoleCleaner.clearConsole();
+                return false;
+            }
 
             if (monster.getHealthPoints() <= 0)
             {

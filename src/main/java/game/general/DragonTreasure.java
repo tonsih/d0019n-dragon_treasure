@@ -198,11 +198,7 @@ public class DragonTreasure implements K
                 "\n" + (dungeon.getGameWon() ? WIN_MSG : LOSE_MSG) + "\n");
 
 
-        PrintCollection.printLines(33);
-        System.out.println("Slutstatistik");
-        PrintCollection.printLines(33);
-        System.out.println(player.getStats());
-        PrintCollection.printLines(33);
+        player.printPlayerInfo("Slutstatistik", true);
 
         this.scanner.close();
     }

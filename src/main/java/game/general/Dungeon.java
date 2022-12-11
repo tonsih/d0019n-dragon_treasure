@@ -8,6 +8,7 @@ import game.entities.Player;
 import game.interfaces.Printable;
 import game.items.*;
 import game.items.consumables.Consumable;
+import game.items.treasures.Treasure;
 import utils.ConsoleCleaner;
 import utils.StringManipulator;
 
@@ -96,7 +97,7 @@ public class Dungeon implements K
 
             System.out.println();
 
-            this.printPlayerInfo();
+            this.player.printPlayerInfo("Spelar Info");
 
             System.out.printf("\n(Du befinner dig i %s)\n", this.currentRoom.getRoomIdString());
             System.out.println();
@@ -296,50 +297,6 @@ public class Dungeon implements K
         return true;
     }
 
-    private void printPlayerInfo()
-    {
-
-        String[] containers = new String[]
-        {
-                "| Player Info ",
-                String.format("| Name: %s", this.player.getName()),
-                String.format("| HP: %d", this.player.getHealthPoints()),
-                String.format("| Max DMG: %d", this.player.getMaxDamage())
-        };
-
-        String containerEnd = " |";
-
-        int boxWidth = containers[0].length() + containerEnd.length();
-
-        for (String s : containers)
-        {
-            if (s.length() + containerEnd.length() > boxWidth)
-            {
-                boxWidth = s.length() + containerEnd.length();
-            }
-        }
-
-        PrintCollection.printLinesWithPlusCorners(boxWidth);
-
-        int amountOfSpaces = boxWidth - containers[0].length();
-
-        System.out.print(containers[0]);
-        PrintCollection.printAmountOfSpaces(amountOfSpaces);
-        System.out.println(containerEnd);
-
-        PrintCollection.printLinesWithPlusCorners(boxWidth);
-
-        for (int i = 1; i < containers.length; i++)
-        {
-            amountOfSpaces = boxWidth - containers[i].length();
-            System.out.print(containers[i]);
-            PrintCollection.printAmountOfSpaces(amountOfSpaces);
-            System.out.println(containerEnd);
-        }
-
-        PrintCollection.printLinesWithPlusCorners(boxWidth);
-
-    }
 
     //  Prints out a message and the current room won't contain the treasure
     //  anymore
@@ -449,6 +406,9 @@ public class Dungeon implements K
 
     private void processPickedUpItems()
     {
+        ConsoleCleaner.clearConsole();
+        PrintCollection.printLinesWithPlusCorners();
+
         ArrayList<Item> items = new ArrayList<>(this.currentRoom.getItems());
         items.addAll(this.currentRoom.getKeyring().getKeys());
 
@@ -462,18 +422,20 @@ public class Dungeon implements K
             System.out.printf("Du tar upp %s\n", item.getName().toLowerCase());
             System.out.printf("\nBeskrivning:\n%s\n", item.getItemDesc());
 
-            if (item instanceof Consumable)
+            if (!(item instanceof Consumable))
+            {
+                this.player.addItem(item);
+
+                if (item.instantlyAffectsOnPickup())
+                {
+                    item.applyEffect(this.player);
+                }
+            } else
             {
                 this.player.addConsumable((Consumable) item);
-                continue;
             }
 
-            this.player.addItem(item);
-
-            if (item.instantlyAffectsOnPickup())
-            {
-                item.applyEffect(this.player);
-            }
+            PrintCollection.printLinesWithPlusCorners();
 
         }
 
