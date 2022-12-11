@@ -97,7 +97,7 @@ public class Dungeon implements K
 
             System.out.println();
 
-            this.player.printPlayerInfo("Spelar Info");
+            this.player.printPlayerInfo("Spelarinformation");
 
             System.out.printf("\n(Du befinner dig i %s)\n", this.currentRoom.getRoomIdString());
             System.out.println();

@@ -52,7 +52,7 @@ public class Battle
 
     public boolean newBattle()
     {
-        TimeManipulator.wait(1000);
+        TimeManipulator.wait(500);
         System.out.printf("%s dyker upp\n", this.monster.getMonsterDesc());
         TimeManipulator.wait(1000);
         this.monster.printObject();

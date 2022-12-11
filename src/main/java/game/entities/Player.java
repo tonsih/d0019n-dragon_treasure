@@ -123,7 +123,7 @@ public class Player extends Entity implements K
         String[] containers = new String[]
                 {
                         String.format("| %s ", title),
-                        String.format("| Name: %s", this.name),
+                        String.format("| Namn: %s", this.name),
                         String.format("| HP: %d", this.healthPoints),
                         String.format("| Max DMG: %d", this.maxDamage),
                         String.format("| Dödade monsters: %d", this.totalMonstersKilled)
