@@ -1,5 +1,6 @@
 package game.general;
 
+import game.data.Command;
 import game.data.K;
 import game.data.PrintCollection;
 import game.entities.Dragon;
@@ -170,7 +171,12 @@ public class DragonTreasure implements K
         The game.general.Dungeon-instance takes the players name, starting room
         and the entrance position as constructor arguments.
 */
-        Player player = new Player(this.startPrompt());
+
+        String playerName = this.startPrompt();
+
+        if (playerName == null) return;
+
+        Player player = new Player(playerName);
 
         Dungeon dungeon = new Dungeon(player, this.roomArr[0], e, scanner);
         dungeon.playGame();
@@ -188,12 +194,9 @@ public class DragonTreasure implements K
         if (dungeon.getGameWon()) PrintCollection.printWinASCII();
         else PrintCollection.printLoseASCII();
 
-        TimeManipulator.wait(1000);
-
         System.out.println(
                 "\n" + (dungeon.getGameWon() ? WIN_MSG : LOSE_MSG) + "\n");
 
-        TimeManipulator.wait(500);
 
         PrintCollection.printLines(33);
         System.out.println("Slutstatistik");
@@ -215,38 +218,36 @@ public class DragonTreasure implements K
     {
 
         String promptString =
-                "Skriv ditt namn och tryck på [Enter] för att starta ett " +
-                        "nytt spel...";
-
-        promptString = String.format("%s\n%s\n", WELCOME_MSG, promptString);
+                String.format(
+                        "%s\nSkriv ditt namn och tryck på [Enter] för att " +
+                        "starta ett nytt spel... (Skriv \"%c\" för att " +
+                        "avsluta spelet)\n",
+                        WELCOME_MSG,
+                        Command.EXIT_GAME.commandValue
+                );
 
         String ans;
-        boolean animateFlag = true;
 
         do
         {
             PrintCollection.printDragonTreasureLogo();
-            if (animateFlag)
-            {
-                StringManipulator.animateString(promptString);
+            System.out.println(promptString);
 
-            } else
-            {
-                System.out.println(promptString);
-            }
-
-            animateFlag = false;
-
-            System.out.print("Namn: ");
-            ans = scanner.nextLine();
+            PrintCollection.printConsoleMarker();
+            ans = scanner.nextLine().trim().replaceAll(" +", " ");
 
             ConsoleCleaner.clearConsole();
+
+            if (ans.length() == 1 && ans.toLowerCase().charAt(0) == Command.EXIT_GAME.commandValue)
+            {
+                return null;
+            }
 
 
         } while (ans.isBlank());
 
 
-        return ans.trim().replaceAll(" +", " ");
+        return ans;
 
     }
 

@@ -252,6 +252,7 @@ public class Dungeon implements K
     */
     private boolean welcomePrompt() throws Exception
     {
+
         while (true)
         {
             PrintCollection.printLines();
@@ -259,12 +260,12 @@ public class Dungeon implements K
             String enterCaveOptionString = String.format("Gå in i grottan [%c]", this.entrancePos);
             String quitGameOptionString = String.format("Avsluta spelet [%c]", Command.EXIT_GAME.commandValue);
 
-            System.out.printf(
+            String welcomeMsg = String.format(
                     "Välkommen %s till din skattjakt.\n" +
                             "Du står utanför en grotta. Det luktar svavel från öppningen.\n" +
                             "Grottöppningen är %s.\n\n" +
                             "%s\n" +
-                            "%s\n\n",
+                            "%s\n",
                     this.player.getName(),
                     ValueManager.generatePosString(this.entrancePos)
                             .toLowerCase(),
@@ -272,6 +273,8 @@ public class Dungeon implements K
                     quitGameOptionString
             );
 
+
+            System.out.println(welcomeMsg);
 
             PrintCollection.printConsoleMarker();
             String ans = scanner.nextLine();
@@ -429,8 +432,7 @@ public class Dungeon implements K
             }
 
             System.out.printf("Du tar upp %s\n", item.getName().toLowerCase());
-            System.out.printf("\nBeskrivning:\n%s\n", item.getItemDesc(),
-                    item.getItemDesc().toLowerCase());
+            System.out.printf("\nBeskrivning:\n%s\n", item.getItemDesc());
 
             if (item instanceof Consumable)
             {
@@ -448,7 +450,6 @@ public class Dungeon implements K
         }
 
         this.currentRoom.clearRoomFromItemsAndKeys();
-        TimeManipulator.wait(2000);
     }
 
 
