@@ -97,7 +97,7 @@ public class Battle
             printAttackOption();
 
             System.out.println();
-            Dungeon.printEscapeOption();
+            PrintCollection.printEscapeOption();
             System.out.println();
 
             PrintCollection.printConsoleMarker();

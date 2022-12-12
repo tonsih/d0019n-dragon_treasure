@@ -212,7 +212,7 @@ public class DragonTreasure implements K
     private String startPrompt()
     {
 
-        environmentCheckPrompt();
+        if (!environmentCheckPrompt()) return null;
 
         String ans;
 
@@ -239,16 +239,18 @@ public class DragonTreasure implements K
 
     }
 
-    private void environmentCheckPrompt()
+    private boolean environmentCheckPrompt()
     {
         while (true)
         {
             PrintCollection.printLinesWithPlusCorners();
 
             System.out.printf("Jag kör programmet via en IDE [%c]\n" +
-                            "Jag kör programmet via en Unix terminal eller via Windows CMD [%c]\n"
+                            "Jag kör programmet via en Unix terminal eller Windows CMD [%c]\n"
                     , Command.IDE_OPTION.commandValue, Command.TERMINAL_OPTION.commandValue);
+
             System.out.println();
+            PrintCollection.printEscapeOption();
 
             PrintCollection.printConsoleMarker();
 
@@ -270,11 +272,13 @@ public class DragonTreasure implements K
                     case IDE_OPTION:
                         ConsoleCleaner.setClear_console_enabled(false);
                         PrintCollection.printLinesWithPlusCorners(110);
-                        return;
+                        return true;
                     case TERMINAL_OPTION:
                         ConsoleCleaner.setClear_console_enabled(true);
                         ConsoleCleaner.clearConsole();
-                        return;
+                        return true;
+                    case EXIT_GAME:
+                        return false;
                 }
             }
 

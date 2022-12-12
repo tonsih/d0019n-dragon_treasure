@@ -341,6 +341,10 @@ public abstract class PrintCollection implements K
 
     }
 
+    public static void printEscapeOption()
+    {
+        System.out.printf("%s\n", K.ESCAPE_OPTION_MSG);
+    }
 
 
     public static void printConsoleMarker()

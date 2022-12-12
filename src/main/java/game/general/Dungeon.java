@@ -105,7 +105,7 @@ public class Dungeon implements K
             this.printConsumablesOnPlayer();
             this.printAvailableDoors();
             System.out.println();
-            printEscapeOption();
+            PrintCollection.printEscapeOption();
             System.out.println();
 
             PrintCollection.printConsoleMarker();

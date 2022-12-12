@@ -61,7 +61,7 @@ public interface K
     int DRAGON_HP = 15;
     int DRAGON_MAX_DMG = 3;
 
-    char n = 'n', s = 's', w = 'w', e = 'o';
+    char n = 'n', s = 's', w = 'v', e = 'o';
 
     String DIRECTION_ORDER = "" + n + e + s + w;
 
@@ -84,4 +84,12 @@ public interface K
                     WELCOME_MSG,
                     Command.EXIT_GAME.commandValue
             );
+
+
+    String ESCAPE_OPTION_MSG =
+            String.format(
+                    "Avsluta spelet [%c]\n",
+                Command.EXIT_GAME.commandValue
+            );
+
 }
