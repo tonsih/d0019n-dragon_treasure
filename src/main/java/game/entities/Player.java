@@ -12,7 +12,6 @@ public class Player extends Entity implements K
 
     private final ArrayList<Treasure> treasures;
 
-
     private boolean isAlive;
 
     private int totalMonstersKilled;
@@ -74,26 +73,6 @@ public class Player extends Entity implements K
 
     }
 
-    public String getStats()
-    {
-
-        return String.format(
-                "Namn: %s\n" +
-                "HP: %s\n"   +
-                "Max. DMG: %d\n"  +
-                "Dödade monsters: %d\n" +
-                "%s",
-                super.name,
-                super.healthPoints > 0 ? super.healthPoints :
-                        super.healthPoints + " (du dog)",
-                super.maxDamage,
-                this.totalMonstersKilled,
-                this.treasures.size() > 0 ?
-                        "\nSkatter:\n" + this.treasuresString() :
-                        "\nInga skatter"
-        );
-    }
-
 
     public void setAlive(boolean isAlive)
     {
@@ -104,16 +83,6 @@ public class Player extends Entity implements K
     public void addMonsterKilled()
     {
         this.totalMonstersKilled++;
-    }
-
-    public void printName()
-    {
-        System.out.println(this.name);
-    }
-
-    public int getMonstersKilled()
-    {
-        return this.totalMonstersKilled;
     }
 
 

@@ -61,7 +61,7 @@ public interface K
     int DRAGON_HP = 15;
     int DRAGON_MAX_DMG = 3;
 
-    char n = 'n', s = 's', w = 'v', e = 'ö';
+    char n = 'n', s = 's', w = 'w', e = 'o';
 
     String DIRECTION_ORDER = "" + n + e + s + w;
 
@@ -74,4 +74,14 @@ public interface K
 
     int AMOUNT_OF_LINES = 99;
     int BOMB_DMG = 8;
+
+
+    String NAME_PROMPT_MSG =
+            String.format(
+                    "%s\nSkriv ditt namn och tryck på [Enter] för att " +
+                            "starta ett nytt spel... (Skriv \"%c\" för att " +
+                            "avsluta spelet)\n",
+                    WELCOME_MSG,
+                    Command.EXIT_GAME.commandValue
+            );
 }

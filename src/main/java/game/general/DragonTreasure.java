@@ -3,6 +3,7 @@ package game.general;
 import game.data.Command;
 import game.data.K;
 import game.data.PrintCollection;
+import game.data.ValueManager;
 import game.entities.Dragon;
 import game.entities.Monster;
 import game.entities.Player;
@@ -14,8 +15,6 @@ import game.items.weapons.Grenade;
 import game.items.weapons.Sword;
 import utils.ArrayManipulator;
 import utils.ConsoleCleaner;
-import utils.StringManipulator;
-import utils.TimeManipulator;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -213,21 +212,14 @@ public class DragonTreasure implements K
     private String startPrompt()
     {
 
-        String promptString =
-                String.format(
-                        "%s\nSkriv ditt namn och tryck på [Enter] för att " +
-                        "starta ett nytt spel... (Skriv \"%c\" för att " +
-                        "avsluta spelet)\n",
-                        WELCOME_MSG,
-                        Command.EXIT_GAME.commandValue
-                );
+        environmentCheckPrompt();
 
         String ans;
 
         do
         {
             PrintCollection.printDragonTreasureLogo();
-            System.out.println(promptString);
+            System.out.println(NAME_PROMPT_MSG);
 
             PrintCollection.printConsoleMarker();
             ans = scanner.nextLine().trim().replaceAll(" +", " ");
@@ -245,6 +237,48 @@ public class DragonTreasure implements K
 
         return ans;
 
+    }
+
+    private void environmentCheckPrompt()
+    {
+        while (true)
+        {
+            PrintCollection.printLinesWithPlusCorners();
+
+            System.out.printf("Jag kör programmet via en IDE [%c]\n" +
+                            "Jag kör programmet via en Unix terminal eller via Windows CMD [%c]\n"
+                    , Command.IDE_OPTION.commandValue, Command.TERMINAL_OPTION.commandValue);
+            System.out.println();
+
+            PrintCollection.printConsoleMarker();
+
+            String ansString = this.scanner.nextLine().trim().toLowerCase();
+
+            if (ansString.isBlank())
+            {
+                continue;
+            }
+
+            char ansChar = ansString.charAt(0);
+
+            Command charCommand = ValueManager.getCommandValueWithChar(ansChar);
+
+            if (charCommand != null)
+            {
+                switch (charCommand)
+                {
+                    case IDE_OPTION:
+                        ConsoleCleaner.setClear_console_enabled(false);
+                        PrintCollection.printLinesWithPlusCorners(110);
+                        return;
+                    case TERMINAL_OPTION:
+                        ConsoleCleaner.setClear_console_enabled(true);
+                        ConsoleCleaner.clearConsole();
+                        return;
+                }
+            }
+
+        }
     }
 
 
