@@ -52,12 +52,13 @@ public class Dungeon implements K
     /**
      * Constructor for a Dungeon-instance.
      *
-     * @param player              The player-entity for the game.
-     * @param startingRoom        The room in which the player starts the game.
-     * @param entrancePos         The position of the first entrance.
-     * @param scanner             A scanner, used to take user input in this
-     *                            case.
-     * @param visualEffectManager Used to take care of clearing the console.
+     * @param player The player-entity for the game.
+     * @param startingRoom The room in which the player starts the
+     *         game.
+     * @param entrancePos The position of the first entrance.
+     * @param scanner A scanner, used to take user input in this case.
+     * @param visualEffectManager Used to take care of clearing the
+     *         console.
      */
     public Dungeon(Player player,
                    Room startingRoom,

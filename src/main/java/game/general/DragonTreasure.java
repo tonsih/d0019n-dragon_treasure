@@ -29,14 +29,10 @@ import java.util.Scanner;
  */
 public class DragonTreasure implements K
 {
-    /**
-     * Represents an array containing objects of the type "Room".
-     */
+    /** Represents an array containing objects of the type "Room". */
     private final Room[] roomArr;
 
-    /**
-     * An array of room descriptions.
-     */
+    /** An array of room descriptions. */
     private final String[] roomDescArr;
 
     /**
@@ -45,9 +41,7 @@ public class DragonTreasure implements K
      */
     private final VisualEffectManager visualEffectManager;
 
-    /**
-     * A scanner which is used mainly in this project to take user input.
-     */
+    /** A scanner which is used mainly in this project to take user input. */
     private final Scanner scanner;
 
     /**
@@ -115,7 +109,6 @@ public class DragonTreasure implements K
                                END OF MAP LAYOUT
     ============================================================================
     */
-
 
         /*
          * New rooms are added to roomsArr. Each room is specified separately
@@ -216,9 +209,11 @@ public class DragonTreasure implements K
 
         dungeon.playGame();
 
-        // The endGame-method which takes in a reference to a Dungeon- and a
-        // Player-instance as arguments. Expected to be the last thing to run
-        // and handles the ending of the program/game.
+        /*
+         * The endGame-method which takes in a reference to a Dungeon- and a
+         * Player-instance as arguments. Expected to be the last thing to run
+         * and handles the ending of the program/game.
+         */
         this.endGame(dungeon, player);
     }
 
