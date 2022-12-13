@@ -18,19 +18,4 @@ public class StringManipulator
 
     }
 
-
-    public static void animateString(String string, int speed)
-    {
-        for (char c : string.toCharArray())
-        {
-            TimeManipulator.wait(speed);
-            System.out.print(c);
-        }
-    }
-
-    public static void animateString(String string)
-    {
-        animateString(string, 33);
-    }
-
 }

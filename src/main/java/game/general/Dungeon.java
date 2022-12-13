@@ -8,114 +8,141 @@ import game.entities.Player;
 import game.interfaces.Printable;
 import game.items.*;
 import game.items.consumables.Consumable;
-import game.items.treasures.Treasure;
-import utils.ConsoleCleaner;
-import utils.StringManipulator;
+import utils.VisualEffectManager;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * This class handles the player navigation and the core gameplay (apart from
+ * the monster battles)
+ */
 public class Dungeon implements K
 {
-
-    //  player-variable -- Stores the player.
+    /**
+     * Stores a reference to the player. Represents an entity which the user
+     * navigates and plays the game with.
+     */
     private final Player player;
 
-
-    //  currentRoom-variable -- Stores the current room in which the player
-    //  is in.
+    /** Represents the room in which the player currently resides. */
     private Room currentRoom;
 
-
-    //  entrancePos-variable -- Stores the entrance position.
+    /**
+     * Stores the entrance position. Determines the direction in which the user
+     * has to go when the game starts.
+     */
     private final char entrancePos;
 
+    /**
+     * Stores a reference to a Scanner-instance. The purpose is to take and
+     * store data inputted by the user.
+     */
     private final Scanner scanner;
 
+    /**
+     * Stores a reference to a VirtualEffectManager-instance. Used for visual
+     * effects (clearing the console between pre-determined stages)
+     */
+    private final VisualEffectManager visualEffectManager;
+
+    /** Stores the game result (game won/lost). */
     private boolean gameWon;
 
-
-    /*
-        game.general.Dungeon-constructor -- Takes the player, starting room
-        and the
-        entrance position as constructor arguments and assigns those values
-        to the
-        corresponding values represented by the instance-variables.
-    */
+    /**
+     * Constructor for a Dungeon-instance.
+     *
+     * @param player              The player-entity for the game.
+     * @param startingRoom        The room in which the player starts the game.
+     * @param entrancePos         The position of the first entrance.
+     * @param scanner             A scanner, used to take user input in this
+     *                            case.
+     * @param visualEffectManager Used to take care of clearing the console.
+     */
     public Dungeon(Player player,
                    Room startingRoom,
                    char entrancePos,
-                   Scanner scanner)
+                   Scanner scanner,
+                   VisualEffectManager visualEffectManager)
     {
         this.player = player;
         this.currentRoom = startingRoom;
         this.entrancePos = entrancePos;
         this.scanner = scanner;
-
+        this.visualEffectManager = visualEffectManager;
     }
 
+    /**
+     * @return "true" if gameWon is "true". Returns "false" otherwise.
+     */
     public boolean getGameWon()
     {
         return this.gameWon;
     }
 
-
-    /*
-        playGame-method -- Contains the integral part of the game. Most of the
-        gameplay occurs inside this function, aside from what happens inside the
-        startPrompt- and the endGame-method from the DungeonTreasure-instance.
-    */
+    /**
+     * Navigation and core gameplay is handled in this method (apart from the
+     * battles)
+     *
+     * @throws Exception If something goes wrong while clearing the console.
+     */
     public void playGame() throws Exception
     {
-
-//      welcomePrompt is called in the beginning. Read more about it in the
-//      commented description included above the method itself.
+        // Returns void if the player chose to quit the game.
         if (!this.welcomePrompt()) return;
 
+        // Stores a boolean value determining if the roomDescription should be
+        // printed out later or not.
         boolean narrativeFlag = true;
 
         whileLoop:
         while (true)
         {
-
+            // If the current room has a monster.
             if (this.currentRoom.hasMonster())
-            {
-                if (!this.currentRoom.doBattle(this.player, this.scanner)) return;
-            }
+                // Start a battle and return "void" if player loses the battle.
+                if (!this.currentRoom.doBattle(this.player,
+                        this.scanner,
+                        this.visualEffectManager)) return;
 
-            if (this.currentRoom.hasTreasure())
-            {
-                this.findTreasure();
-            }
+            // Handle finding the treasure appropriately with the findTreasure-
+            // method, if the current room has a treasure inside it.
+            if (this.currentRoom.hasTreasure()) this.findTreasure();
 
-            else if (narrativeFlag)
-            {
-                this.currentRoom.doNarrative();
-            }
+                // Print the current room description, if there's no treasure
+                // in the
+                // current room and narrativeFlag is "true"
+            else if (narrativeFlag) this.currentRoom.printRoomDesc();
 
+            // Assign narrativeFlag to "false"
             narrativeFlag = false;
 
+            // Print an empty line for aesthetic purposes.
             System.out.println();
 
+            // Prints a box with player information, such as HP, Max. DMG etc.
             this.player.printPlayerInfo("Spelarinformation");
 
-            System.out.printf("\n(Du befinner dig i %s)\n", this.currentRoom.getRoomIdString());
+            // Prints out the ID of the current room.
+            System.out.printf("\n(Du befinner dig i %s)\n",
+                    this.currentRoom.getRoomIdString());
             System.out.println();
+
             this.printItemsInRoom();
             this.printConsumablesOnPlayer();
             this.printAvailableDoors();
+
             System.out.println();
             PrintCollection.printEscapeOption();
-            System.out.println();
 
+            System.out.println();
             PrintCollection.printConsoleMarker();
 
             String ansStr = scanner.nextLine().trim().toLowerCase();
 
-            ConsoleCleaner.clearConsole();
+            this.visualEffectManager.clearConsole();
 
             PrintCollection.printLinesWithPlusCorners();
-
 
 
 //          If the user inputs only whitespace or presses enter without other
@@ -140,7 +167,7 @@ public class Dungeon implements K
                 switch (commandValueOfAns)
                 {
                     case EXIT_GAME:
-                        ConsoleCleaner.clearConsole();
+                        this.visualEffectManager.clearConsole();
                         break whileLoop;
                     case PICKUP_ITEM:
                         if (this.currentRoom.getItems().size() > 0 ||
@@ -220,14 +247,16 @@ public class Dungeon implements K
                         {
                             PrintCollection.printTreasureChest();
                             System.out.println(
-                                    "Du kikar genom nyckelhålet och ser en kista med " +
+                                    "Du kikar genom nyckelhålet och ser en " +
+                                            "kista med " +
                                             currentDoor.getPointsToRoom()
                                                     .getTreasure()
                                                     .getLockedDesc()
                                                     .toLowerCase());
                         } else
                         {
-                            System.out.println("Du har ingen nyckel som passar.");
+                            System.out.println(
+                                    "Du har ingen nyckel som " + "passar.");
                         }
 
 
@@ -254,29 +283,23 @@ public class Dungeon implements K
         {
             PrintCollection.printLinesWithPlusCorners();
 
-            String enterCaveOptionString = String.format("Gå in i grottan [%c]", this.entrancePos);
-            String quitGameOptionString = String.format("Avsluta spelet [%c]", Command.EXIT_GAME.commandValue);
+            String enterCaveOptionString =
+                    String.format("Gå in i grottan [%c]", this.entrancePos);
 
-            String welcomeMsg = String.format(
-                    "Välkommen %s till din skattjakt.\n" +
-                            "Du står utanför en grotta. Det luktar svavel från öppningen.\n" +
-                            "Grottöppningen är %s.\n\n" +
-                            "%s\n" +
+            System.out.printf("Välkommen %s till din skattjakt.\n" +
+                            "Du står utanför en grotta. Det luktar svavel " +
+                            "från öppningen.\n" + "Grottöppningen är %s.\n\n" + "%s\n" +
                             "%s\n",
                     this.player.getName(),
                     ValueManager.generatePosString(this.entrancePos)
                             .toLowerCase(),
                     enterCaveOptionString,
-                    quitGameOptionString
-            );
-
-
-            System.out.println(welcomeMsg);
+                    K.ESCAPE_OPTION_MSG);
 
             PrintCollection.printConsoleMarker();
             String ans = scanner.nextLine();
 
-            ConsoleCleaner.clearConsole();
+            this.visualEffectManager.clearConsole();
 
             if (ans.isBlank()) continue;
 
@@ -286,7 +309,7 @@ public class Dungeon implements K
 
             if (ansChar == Command.EXIT_GAME.commandValue)
             {
-                ConsoleCleaner.clearConsole();
+                this.visualEffectManager.clearConsole();
                 return false;
             }
 
@@ -303,14 +326,16 @@ public class Dungeon implements K
     private void findTreasure()
     {
         this.currentRoom.getTreasure().applyEffect(this.player);
-        System.out.printf("Värde: %d Guld\n", this.currentRoom.getTreasure().getGoldValue());
+        System.out.printf("Värde: %d Guld\n",
+                this.currentRoom.getTreasure().getGoldValue());
         this.currentRoom.removeTreasure();
     }
 
 
     private void printItemsInRoom()
     {
-        ArrayList<Item> tempItems = new ArrayList<>(this.currentRoom.getItems());
+        ArrayList<Item> tempItems =
+                new ArrayList<>(this.currentRoom.getItems());
         tempItems.addAll(this.currentRoom.getKeyring().getKeys());
 
         for (Item item : tempItems)
@@ -328,24 +353,26 @@ public class Dungeon implements K
         for (Consumable consumable : this.player.getConsumables())
         {
 
-            System.out.printf(
-                    "Du kan förbruka %s [%c]\n",
-                    consumable.getName()
-                            .toLowerCase(),
+            System.out.printf("Du kan förbruka %s [%c]\n",
+                    consumable.getName().toLowerCase(),
                     consumable.getUseCommand());
         }
 
     }
 
 
-/*
-    printAvailableDoors-method -- Prints the doors which are available for the
-    current room.
+    /*
+        printAvailableDoors-method -- Prints the doors which are available
+        for the
+        current room.
 
-    Prints out different output depending on the state of the door's attributes.
-    If the door is locked; a different string will be printed. The same applies
-    if the door is an exit: a different string from the default will be printed.
-*/
+        Prints out different output depending on the state of the door's
+        attributes.
+        If the door is locked; a different string will be printed. The same
+        applies
+        if the door is an exit: a different string from the default will be
+        printed.
+    */
     private void printAvailableDoors() throws Exception
     {
 
@@ -388,7 +415,8 @@ public class Dungeon implements K
 
             }
 
-//            System.out.printf(" - Leder till rum %d", currentDoor.getPointsToRoom().getRoomId());
+//            System.out.printf(" - Leder till rum %d", currentDoor
+//            .getPointsToRoom().getRoomId());
 
             System.out.println();
         }
@@ -403,10 +431,9 @@ public class Dungeon implements K
     }
 
 
-
-    private void processPickedUpItems()
+    private void processPickedUpItems() throws Exception
     {
-        ConsoleCleaner.clearConsole();
+        this.visualEffectManager.clearConsole();
         PrintCollection.printLinesWithPlusCorners();
 
         ArrayList<Item> items = new ArrayList<>(this.currentRoom.getItems());
@@ -441,9 +468,6 @@ public class Dungeon implements K
 
         this.currentRoom.clearRoomFromItemsAndKeys();
     }
-
-
-
 
 
 }

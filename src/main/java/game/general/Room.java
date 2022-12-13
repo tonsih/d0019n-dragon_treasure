@@ -2,17 +2,12 @@ package game.general;
 
 import game.battle.Battle;
 import game.data.K;
-import game.data.PrintCollection;
-import game.data.ValueManager;
-import game.entities.Dragon;
 import game.entities.Monster;
 import game.entities.Player;
 import game.items.Item;
-import game.items.Key;
 import game.items.Keyring;
-import game.items.treasures.Kitten;
 import game.items.treasures.Treasure;
-import utils.TimeManipulator;
+import utils.VisualEffectManager;
 
 import java.util.*;
 
@@ -40,6 +35,8 @@ public class Room implements K
 
     private Monster monster;
 
+
+
     //  game.general.Room constructor -- Takes a room description and a door
     //  array as
     //  arguments
@@ -58,7 +55,6 @@ public class Room implements K
         this.treasure = treasure;
         this.items = Objects.requireNonNullElseGet(items, ArrayList::new);
         this.monster = monster;
-
         this.roomId = generateRoomId();
 
 
@@ -120,18 +116,18 @@ public class Room implements K
     }
 
 
-    //  doNarrative-method -- Prints out the room description of the current
-    //  game.general.Room-object.
-    public void doNarrative()
+    //  printRoomDesc-method -- Prints out the room description of the current
+    //  Room-object.
+    public void printRoomDesc()
     {
         System.out.println(this.roomDesc);
-
     }
 
     public String getRoomDesc()
     {
         return this.roomDesc;
     }
+
 
     public int getRoomId()
     {
@@ -221,9 +217,10 @@ public class Room implements K
         this.removeKeyring();
     }
 
-    public boolean doBattle(Player player, Scanner scanner)
+    public boolean doBattle(Player player, Scanner scanner, VisualEffectManager visualEffectManager)
+            throws Exception
     {
-        boolean battleResult = new Battle(player, this.monster, scanner).newBattle();
+        boolean battleResult = new Battle(player, this.monster, scanner, visualEffectManager).newBattle();
 
         if (battleResult)
         {

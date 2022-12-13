@@ -9,6 +9,8 @@ public interface K
     //  Stores the value for amount of rooms
     int ROOM_AMOUNT = 7;
 
+    String CONSOLE_MARKER = "> ";
+
 
     //  roomDescArr-variable -- An array of descriptions for rooms.
     String[] roomDescArr = new String[]{
@@ -92,4 +94,12 @@ public interface K
                 Command.EXIT_GAME.commandValue
             );
 
+
+
+    String ENVIRONMENT_CHECK_MSG = String.format("Jag kör programmet via en IDE [%c]\n" +
+                    "Jag kör programmet via en Unix terminal eller Windows CMD [%c]\n"
+                    , Command.IDE_OPTION.commandValue, Command.TERMINAL_OPTION.commandValue);
+
+
+    int ANIMATE_TEXT_SPEED = 33;
 }

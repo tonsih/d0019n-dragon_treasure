@@ -34,7 +34,7 @@ public class Door
         } else
         {
 
-            throw new Exception("A door was not defined to be in a valid " +
+            throw new IllegalArgumentException("A door was not defined to be in a valid " +
                     "position [" + ValueManager.directionCommandsToString() + "]");
         }
         this.locked = locked;

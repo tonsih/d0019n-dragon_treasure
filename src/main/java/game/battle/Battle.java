@@ -6,10 +6,9 @@ import game.data.PrintCollection;
 import game.entities.Entity;
 import game.entities.Monster;
 import game.entities.Player;
-import game.general.Dungeon;
 import game.items.Item;
 import game.items.consumables.Consumable;
-import utils.ConsoleCleaner;
+import utils.VisualEffectManager;
 import utils.TimeManipulator;
 
 import java.util.ArrayList;
@@ -25,12 +24,15 @@ public class Battle
 
     private final Scanner scanner;
 
-    public Battle(Player player, Monster monster, Scanner scanner)
+    private final VisualEffectManager visualEffectManager;
+
+    public Battle(Player player, Monster monster, Scanner scanner, VisualEffectManager visualEffectManager)
     {
         this.player = player;
         this.monster = monster;
         this.battleInventory = getBattleInventory(this.player);
         this.scanner = scanner;
+        this.visualEffectManager = visualEffectManager;
     }
 
     private ArrayList<Item> getBattleInventory(Player player)
@@ -50,7 +52,7 @@ public class Battle
         return tempBattleInventory;
     }
 
-    public boolean newBattle()
+    public boolean newBattle() throws Exception
     {
         TimeManipulator.wait(500);
         System.out.printf("%s dyker upp\n", this.monster.getMonsterDesc());
@@ -74,7 +76,7 @@ public class Battle
 
             if (!this.battlePlayerMenu())
             {
-                ConsoleCleaner.clearConsole();
+                this.visualEffectManager.clearConsole();
                 return false;
             }
 
@@ -88,7 +90,7 @@ public class Battle
         }
     }
 
-    private boolean battlePlayerMenu()
+    private boolean battlePlayerMenu() throws Exception
     {
         while (true)
         {
@@ -103,7 +105,7 @@ public class Battle
             PrintCollection.printConsoleMarker();
             String ansStr = this.scanner.nextLine();
 
-            ConsoleCleaner.clearConsole();
+            this.visualEffectManager.clearConsole();
             PrintCollection.printLinesWithPlusCorners();
 
             if (ansStr.isBlank()) continue;
@@ -191,9 +193,9 @@ public class Battle
                 attacked.getHealthPoints());
     }
 
-    private void printWinsMessage(Entity winner, Entity loser)
+    private void printWinsMessage(Entity winner, Entity loser) throws Exception
     {
-        ConsoleCleaner.clearConsole();
+        this.visualEffectManager.clearConsole();
 
         PrintCollection.printLinesWithPlusCorners();
         String winsString = String.format("| %s besegrar %s!",

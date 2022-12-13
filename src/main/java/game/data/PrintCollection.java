@@ -233,7 +233,7 @@ public abstract class PrintCollection implements K
         );
     }
 
-    public static void printLoseASCII() throws IOException
+    public static void printLoseASCII()
     {
      System.out.println(
 "                                                                \n"+
@@ -250,7 +250,7 @@ public abstract class PrintCollection implements K
 
     }
 
-    public static void printWinASCII() throws IOException
+    public static void printWinASCII()
     {
         System.out.println(
                 "  _____      _____        _____     ____   ____         _____            ____  _____   ______           \n"+
@@ -349,7 +349,7 @@ public abstract class PrintCollection implements K
 
     public static void printConsoleMarker()
     {
-        System.out.print("> ");
+        System.out.print(K.CONSOLE_MARKER);
     }
 
 
