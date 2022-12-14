@@ -111,9 +111,8 @@ public class Dungeon implements K
             // method, if the current room has a treasure inside it.
             if (this.currentRoom.hasTreasure()) this.findTreasure();
 
-                // Print the current room description, if there's no treasure
-                // in the
-                // current room and narrativeFlag is "true".
+            // Print the current room description, if there's no treasure in the
+            // current room and narrativeFlag is "true".
             else if (narrativeFlag) this.currentRoom.printRoomDesc();
 
             // Assign narrativeFlag to "false" in the beginning of every

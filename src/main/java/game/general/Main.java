@@ -1,14 +1,23 @@
 package game.general;
 
-// The only purpose of the game.general.Main class is to initiate a new DragonTreasure-
-// object and call its method setupGame, which purpose is to set up the game.
+/**
+ * The sole purpose of this class this is to start the program. It calls the
+ * method, which sets up the game before the actual gameplay starts.
+ */
 public class Main
 {
-
+    /**
+     * Contains the call to the method which sets up the game.
+     *
+     * @param args An array of string provided as arguments when program
+     *         is executed. Not really utilized in this program.
+     * @throws Exception
+     */
     public static void main(String[] args) throws Exception
     {
-//       Creates a new game.general.DragonTreasure-instance and calls its method "setupGame"
-         new DragonTreasure().setupGame();
+        // Calls a method of a new instance of DragonTreasure, which sets up the
+        // game.
+        new DragonTreasure().setupGame();
     }
 
 }
