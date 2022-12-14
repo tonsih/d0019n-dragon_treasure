@@ -306,8 +306,16 @@ public class DragonTreasure implements K
                 {
                     case IDE_OPTION:
                         PrintCollection.printLinesWithPlusCorners(110);
+
+                        /*
+                         * These two values which the setters affect are already
+                         * false when an instance of visualEffectManager is
+                         * initiated. They are set to "false" here anyway "just
+                         * in case".
+                         */
                         this.visualEffectManager.setAnimation(false);
                         this.visualEffectManager.setClearConsole(false);
+
                         return true;
                     case TERMINAL_OPTION:
                         this.visualEffectManager.setAnimation(true);
