@@ -102,4 +102,19 @@ public interface K
 
 
     int ANIMATE_TEXT_SPEED = 33;
+
+    String CURRENCY = "Guld";
+
+    Map<String, String> CONTAINER_LABELS = Map.of(
+            "PLAYER_INFORMATION", "Spelarinformation",
+            "END_STATS", "Slutstatistik",
+            "NAME", "Namn",
+            "HP",   "HP",
+            "MAX_DMG", "Max DMG",
+            "MONSTERS_KILLED", "Dödade monsters",
+            "VALUE", "Värde",
+            "TOTAL_VALUE", "Total värde",
+            "TREASURES", "Skatter",
+            "NO_TREASURES", "Inga skatter");
+
 }

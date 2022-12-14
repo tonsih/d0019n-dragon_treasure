@@ -41,7 +41,7 @@ public abstract class Entity
         for (int i = 0; i < this.keyring.size(); i++)
         {
             if (this.keyring.getKeys().get(i).getOpensRoomWithId() ==
-                    room.getRoomId())
+                    room.getRoomID())
             {
                 return true;
             }

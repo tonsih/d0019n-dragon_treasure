@@ -11,229 +11,263 @@ import utils.VisualEffectManager;
 
 import java.util.*;
 
-// The game.general.Room-class contains information about a room.
+/**
+ * This class represents one room. Every room has a unique ID and a room can
+ * have various attributes, such as a room description, connected doors, a
+ * monster, items, a treasure etc...
+ *
+ * @author Toni Sihvola
+ * @author Ludwig Ahnqvist
+ */
 public class Room implements K
 {
+    /** Amount of rooms created. Used to identify each room with a unique ID. */
     private static int roomCount = 0;
 
-    //  roomDesc-variable -- Stores the room description.
+    /** A unique ID for the room */
+    private final int roomID;
+
+    /** Stores a room description. */
     private String roomDesc;
 
-    // Unique identifier for the room.
-    private final int roomId;
+    /** Stores an array of doors. */
+    private final Door[] doors;
 
-
-    //  doorsArr-variable -- Stores an array of doors.
-    private final Door[] doorsArr;
-
-
+    /** A room has its own keyring which can contain zero to many keys. */
     private final Keyring keyring;
 
+    /**
+     * Room's treasure. Expected to be null if there's no treasure in the room.
+     */
     private Treasure treasure;
 
+    /** Stores the room's items. */
     private ArrayList<Item> items;
 
+    /** Represents the monster in the room, if one exists. */
     private Monster monster;
 
-
-
-    //  game.general.Room constructor -- Takes a room description and a door
-    //  array as
-    //  arguments
-//  assigns them to the corresponding variables in the game.general.Room object.
+    /**
+     * Room's constructor.
+     *
+     * @param roomDesc A room description.
+     * @param doors Doors connected to the room.
+     * @param keyring Keyring for the room.
+     * @param treasure The room's treasure.
+     * @param items Items in the room.
+     * @param monster A monster in the room.
+     */
     public Room(String roomDesc,
-                Door[] doorsArr,
+                Door[] doors,
                 Keyring keyring,
                 Treasure treasure,
                 ArrayList<Item> items,
                 Monster monster)
     {
+        this.roomID = generateRoomID();
         this.roomDesc = roomDesc;
-        this.doorsArr =
-                Objects.requireNonNullElseGet(doorsArr, () -> new Door[0]);
+        this.doors = Objects.requireNonNullElseGet(doors, () -> new Door[0]);
         this.keyring = Objects.requireNonNullElseGet(keyring, Keyring::new);
         this.treasure = treasure;
         this.items = Objects.requireNonNullElseGet(items, ArrayList::new);
         this.monster = monster;
-        this.roomId = generateRoomId();
-
-
     }
 
-    void sortDoorsByDirection()
+    public Room(Door[] doors, Keyring keyring)
     {
-        Arrays.sort(this.doorsArr,
-                Comparator.comparingInt(door -> DIRECTION_ORDER.indexOf(door.getPosition())));
+        this(null, doors, keyring, null, null, null);
     }
 
-    public Room(Door[] doorsArr, Keyring keyring)
+    public Room(Door[] doors)
     {
-        this(null, doorsArr, keyring, null, null, null);
+        this(null, doors, null, null, null, null);
     }
 
-
-    public Room(Door[] doorsArr)
+    public Room(Door[] doors, Item item)
     {
-        this(null, doorsArr, null, null, null, null);
+        this(null, doors, null, null, new ArrayList<>(List.of(item)), null);
     }
 
-    public Room(Door[] doorsArr, ArrayList<Item> items)
+    public Room(Door[] doors,
+                Keyring keyring,
+                Treasure treasure,
+                Item[] items,
+                Monster monster)
     {
-        this(null, doorsArr, null, null, items, null);
+        this(null,
+                doors,
+                keyring,
+                treasure,
+                new ArrayList<>(Arrays.asList(items)),
+                monster);
     }
 
-    public Room(Door[] doorsArr, Item item)
-    {
-        this(null, doorsArr, null, null, new ArrayList<>(List.of(item)), null);
-    }
-
-
-    public Room(Door[] doorsArr, Treasure treasure, Item[] items, Monster monster)
-    {
-        this(null, doorsArr, null, treasure,
-                new ArrayList<>(Arrays.asList(items)), monster);
-    }
-
-    public Room(Door[] doorsArr, Keyring keyring, Treasure treasure, Item[] items, Monster monster)
-    {
-        this(null, doorsArr, keyring, treasure,
-                new ArrayList<>(Arrays.asList(items)), monster);
-    }
-
-    public Room(Door[] doorsArr, Treasure treasure, Item item, Monster monster)
-    {
-        this(null, doorsArr, null, treasure, new ArrayList<>(List.of(item)), monster);
-    }
-
-    public Room(Door[] doorsArr, Treasure treasure, Monster monster)
-    {
-        this(null, doorsArr, null, treasure, null, monster);
-    }
-
-    public Room(Door[] doors, Keyring keyring, Treasure treasure, Monster monster)
+    public Room(Door[] doors,
+                Keyring keyring,
+                Treasure treasure,
+                Monster monster)
     {
         this(null, doors, keyring, treasure, null, monster);
     }
 
-
-    //  printRoomDesc-method -- Prints out the room description of the current
-    //  Room-object.
-    public void printRoomDesc()
+    /**
+     * Sorts the doors in the room according to their direction in a
+     * pre-determined order.
+     */
+    public void sortDoorsByDirection()
     {
-        System.out.println(this.roomDesc);
+        Arrays.sort(this.doors,
+                Comparator.comparingInt(door -> DIRECTION_ORDER.indexOf(door.getPosition())));
     }
 
-    public String getRoomDesc()
-    {
-        return this.roomDesc;
-    }
-
-
-    public int getRoomId()
-    {
-        return roomId;
-    }
-
-    public String getRoomIdString()
-    {
-        return String.format("rum nummer %d", this.roomId);
-    }
-
-    //  getDoors-method -- Returns the door array of the game.general.Room
-    //  object.
-    public Door[] getDoors()
-    {
-        return this.doorsArr;
-    }
-
-
-    //  hasTreasure-method -- Returns a boolean-value telling if the room has a
-//  treasure in it.
-    public boolean hasTreasure()
-    {
-        return treasure != null;
-    }
-
-    public Treasure getTreasure()
-    {
-        return this.treasure;
-    }
-
-
-    public Keyring getKeyring()
-    {
-        return this.keyring;
-    }
-
-    public ArrayList<Item> getItems()
-    {
-        return this.items;
-    }
-
-    public boolean hasMonster()
-    {
-        return this.monster != null;
-    }
-
-    public void setNarrative(String roomDesc)
-    {
-        this.roomDesc = roomDesc;
-    }
-
-
-    public void addTreasure(Treasure treasure)
-    {
-        this.treasure = treasure;
-    }
-
-    public void removeTreasure()
-    {
-        this.treasure = null;
-    }
-
-    public void removeKeyring()
-    {
-        this.keyring.removeKeys();
-    }
-
-    public void addItem(Item item)
-    {
-        this.items.add(item);
-    }
-
-    public void removeItem(Item item)
-    {
-        this.items.remove(item);
-    }
-
-    public void clearRoomFromItems()
-    {
-        this.items = new ArrayList<>();
-    }
-
-    public void clearRoomFromItemsAndKeys()
-    {
-        clearRoomFromItems();
-        this.removeKeyring();
-    }
-
-    public boolean doBattle(Player player, Scanner scanner, VisualEffectManager visualEffectManager)
+    /**
+     * Starts a battle starts in the room.
+     *
+     * @param player The player of the game.
+     * @param scanner A scanner used for user input.
+     * @param visualEffectManager Used for visual effects i.e. clearing
+     *         the console.
+     * @return True if player wins, otherwise false.
+     * @throws Exception If something goes wrong while clearing the console.
+     */
+    public boolean doBattle(Player player,
+                            Scanner scanner,
+                            VisualEffectManager visualEffectManager)
             throws Exception
     {
-        boolean battleResult = new Battle(player, this.monster, scanner, visualEffectManager).newBattle();
+        boolean battleResult = new Battle(player,
+                this.monster,
+                scanner,
+                visualEffectManager).newBattle();
 
         if (battleResult)
         {
             this.monster = null;
             return true;
         }
-
         return false;
     }
 
-    private static int generateRoomId()
+    /**
+     * Prints out the description for the room.
+     */
+    public void printRoomDesc()
+    {
+        System.out.println(this.roomDesc);
+    }
+
+    /**
+     * @return The room's ID.
+     */
+    public int getRoomID()
+    {
+        return roomID;
+    }
+
+    /**
+     * @return A string with the room's ID included.
+     */
+    public String getRoomIDString()
+    {
+        return String.format("rum nummer %d", this.roomID);
+    }
+
+    /**
+     * @return Doors connected to the room.
+     */
+    public Door[] getDoors()
+    {
+        return this.doors;
+    }
+
+    /**
+     * @return Room's keyring.
+     */
+    public Keyring getKeyring()
+    {
+        return this.keyring;
+    }
+
+    /**
+     * @return Room's treasure.
+     */
+    public Treasure getTreasure()
+    {
+        return this.treasure;
+    }
+
+    /**
+     * @return Items in the room.
+     */
+    public ArrayList<Item> getItems()
+    {
+        return this.items;
+    }
+
+    /**
+     * @return True if a treasure exists in the room, false otherwise.
+     */
+    public boolean hasTreasure()
+    {
+        return treasure != null;
+    }
+
+    /**
+     * @return True if a monster exists in the room, false otherwise.
+     */
+    public boolean hasMonster()
+    {
+        return this.monster != null;
+    }
+
+    /**
+     * A setter for the room description.
+     *
+     * @param roomDesc The description for the room.
+     */
+    public void setRoomDesc(String roomDesc)
+    {
+        this.roomDesc = roomDesc;
+    }
+
+    /**
+     * Removes all the keys from the room's keyring.
+     */
+    public void removeKeyring()
+    {
+        this.keyring.removeKeys();
+    }
+
+    /**
+     * Removes the treasure from the room.
+     */
+    public void removeTreasure()
+    {
+        this.treasure = null;
+    }
+
+    /**
+     * Clears room from items.
+     */
+    public void clearRoomFromItems()
+    {
+        this.items = new ArrayList<>();
+    }
+
+    /**
+     * Clears room from items and empties keyring belonging to the room.
+     */
+    public void clearRoomFromItemsAndKeys()
+    {
+        clearRoomFromItems();
+        this.removeKeyring();
+    }
+
+    /**
+     * @return A unique roomID
+     */
+    private static int generateRoomID()
     {
         return ++roomCount;
     }
-
 }

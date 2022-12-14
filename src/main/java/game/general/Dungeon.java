@@ -100,7 +100,6 @@ public class Dungeon implements K
         whileLoop:
         while (true)
         {
-            // If the current room has a monster.
             if (this.currentRoom.hasMonster())
                 // Start a battle and return "void" if player loses the battle.
                 if (!this.currentRoom.doBattle(this.player,
@@ -123,11 +122,11 @@ public class Dungeon implements K
             System.out.println();
 
             // Prints a box with player information, such as HP, Max. DMG etc.
-            this.player.printPlayerInfo("Spelarinformation");
+            this.player.printPlayerInfo(K.CONTAINER_LABELS.get("PLAYER_INFORMATION"));
 
             // Prints out the ID of the current room.
             System.out.printf("\n(Du befinner dig i %s)\n",
-                    this.currentRoom.getRoomIdString());
+                    this.currentRoom.getRoomIDString());
             System.out.println();
 
             this.printItemsInRoom();
@@ -162,7 +161,6 @@ public class Dungeon implements K
                         this.processPickedUpItems();
                         continue;
                     }
-
             }
             else continue;
 
@@ -205,7 +203,7 @@ public class Dungeon implements K
 
                         break;
 
-                        // If the door is locked and the player has no key.
+                    // If the door is locked and the player has no key.
                     } else
                     {
                         if (currentDoor.getPointsToRoom().hasTreasure())
@@ -219,12 +217,10 @@ public class Dungeon implements K
                                                     .getLockedDesc()
                                                     .toLowerCase());
                         } else System.out.println(
-                                "Du har ingen nyckel som " + "passar.");
+                                "Du har ingen nyckel som passar.");
                     }
                 }
             }
-
-
         }
     }
 
@@ -249,7 +245,6 @@ public class Dungeon implements K
      */
     private boolean welcomePrompt() throws Exception
     {
-
         while (true)
         {
             PrintCollection.printLinesWithPlusCorners();
@@ -328,7 +323,7 @@ public class Dungeon implements K
 
     /**
      * Prints the directions in which the player can go in from the current
-     * room and information regarding the doors, if they are unlocked, locked,
+     * room and information regarding the doors - if they are unlocked, locked,
      * lead to an exit or both.
      *
      * @throws Exception If a Door-object with an invalid direction exists.
@@ -369,8 +364,8 @@ public class Dungeon implements K
     }
 
     /**
-     * Handles the processing of the items (including Key-objects in the room's
-     * keyring in the current room, if the player has chosen to pick them up.
+     * Handles the processing of the items, including Key-objects in the room's
+     * keyring in the current room if the player has chosen to pick them up.
      *
      * @throws Exception If something goes wrong while clearing the console.
      */

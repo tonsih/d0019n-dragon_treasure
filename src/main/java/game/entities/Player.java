@@ -41,7 +41,6 @@ public class Player extends Entity implements K
     }
 
 
-
     public ArrayList<Treasure> getTreasures()
     {
         return this.treasures;
@@ -61,16 +60,13 @@ public class Player extends Entity implements K
     public String treasuresString()
     {
         String treasureStr = "";
-
         for (Treasure treasure : this.treasures)
         {
             treasureStr +=
                     treasure.getName() + " (värde: " + treasure.getGoldValue() +
                             ")\n";
         }
-
         return treasureStr + "\nTotal värde: " + this.getTreasuresTotalValue();
-
     }
 
 
@@ -88,81 +84,93 @@ public class Player extends Entity implements K
 
     public void printPlayerInfo(String title, boolean treasuresIncluded)
     {
+        String containerPipe = "|";
+        String[] containerRows = new String[]{String.format("%s", title),
+                String.format("%s: %s",
+                        K.CONTAINER_LABELS.get("NAME"),
+                        this.name), String.format("%s: %d",
+                K.CONTAINER_LABELS.get("HP"),
+                this.healthPoints), String.format("%s: %d",
+                K.CONTAINER_LABELS.get("MAX_DMG"),
+                this.maxDamage), String.format("%s: %d",
+                K.CONTAINER_LABELS.get("MONSTERS_KILLED"),
+                this.totalMonstersKilled)};
 
-        String[] containers = new String[]
-                {
-                        String.format("| %s ", title),
-                        String.format("| Namn: %s", this.name),
-                        String.format("| HP: %d", this.healthPoints),
-                        String.format("| Max DMG: %d", this.maxDamage),
-                        String.format("| Dödade monsters: %d", this.totalMonstersKilled)
-                };
+        for (int i = 0; i < containerRows.length; i++)
+        {
+            containerRows[i] = containerPipe + " " + containerRows[i];
+        }
 
         if (treasuresIncluded)
         {
-
             String[] tempContainers;
-            int tempLength = containers.length+this.treasures.size();
+            int tempLength = containerRows.length + this.treasures.size();
 
             if (this.treasures.size() > 0)
             {
-                tempContainers = new String[tempLength+4];
-                tempContainers[tempContainers.length-2] = "|";
-                tempContainers[tempContainers.length-1] = String.format("| Total värde: %d Guld", this.getTreasuresTotalValue());
-            }
-            else tempContainers = new String[tempLength+2];
+                tempContainers = new String[tempLength + 4];
+                tempContainers[tempContainers.length - 2] = containerPipe;
+                tempContainers[tempContainers.length - 1] = String.format(
+                        "%s %s: %d %s",
+                        containerPipe,
+                        K.CONTAINER_LABELS.get("TOTAL_VALUE"),
+                        this.getTreasuresTotalValue(),
+                        K.CONTAINER_LABELS.get("CURRENCY"));
+            } else tempContainers = new String[tempLength + 2];
 
-            tempContainers[containers.length] = "|";
-            tempContainers[containers.length+1] = this.treasures.size() > 0 ? "| Skatter:" : "| Inga Skatter";
+            tempContainers[containerRows.length] = containerPipe;
+            tempContainers[containerRows.length + 1] =
+                    this.treasures.size() > 0 ? containerPipe + " " +
+                            K.CONTAINER_LABELS.get("TREASURES") + ":" :
+                            containerPipe + " " +
+                                    K.CONTAINER_LABELS.get("NO_TREASURES");
 
-            for (int i = 0; i < containers.length; i++)
+            for (int i = 0; i < containerRows.length; i++)
             {
-                tempContainers[i] = containers[i];
+                tempContainers[i] = containerRows[i];
             }
 
             for (int i = 0; i < this.treasures.size(); i++)
             {
                 Treasure treasure = this.treasures.get(i);
-                tempContainers[containers.length+2+i] = String.format("| %s (Värde: %d Guld)", treasure.getName(), treasure.getGoldValue());
+                tempContainers[containerRows.length + 2 + i] = String.format(
+                        "%s %s (%s: %d %s)",
+                        containerPipe,
+                        treasure.getName(),
+                        K.CONTAINER_LABELS.get("VALUE"),
+                        treasure.getGoldValue(),
+                        K.CURRENCY);
             }
 
 
-            containers = tempContainers;
+            containerRows = tempContainers;
 
         }
+        int boxWidth = containerRows[0].length() + containerPipe.length();
 
-        String containerEnd = " |";
-
-        int boxWidth = containers[0].length() + containerEnd.length();
-
-        for (String s : containers)
+        for (String s : containerRows)
         {
-            if (s.length() + containerEnd.length() > boxWidth)
+            if (s.length() + containerPipe.length() > boxWidth)
             {
-                boxWidth = s.length() + containerEnd.length();
+                boxWidth = s.length() + containerPipe.length();
             }
         }
 
-        PrintCollection.printLinesWithPlusCorners(boxWidth);
-
-        int amountOfSpaces = boxWidth - containers[0].length();
-
-        System.out.print(containers[0]);
+        PrintCollection.printLinesWithPlusCorners(boxWidth - 1);
+        int amountOfSpaces = boxWidth - containerRows[0].length();
+        System.out.print(containerRows[0]);
         PrintCollection.printAmountOfSpaces(amountOfSpaces);
-        System.out.println(containerEnd);
+        System.out.println(containerPipe);
+        PrintCollection.printLinesWithPlusCorners(boxWidth - 1);
 
-        PrintCollection.printLinesWithPlusCorners(boxWidth);
-
-        for (int i = 1; i < containers.length; i++)
+        for (int i = 1; i < containerRows.length; i++)
         {
-            amountOfSpaces = boxWidth - containers[i].length();
-            System.out.print(containers[i]);
+            amountOfSpaces = boxWidth - containerRows[i].length();
+            System.out.print(containerRows[i]);
             PrintCollection.printAmountOfSpaces(amountOfSpaces);
-            System.out.println(containerEnd);
+            System.out.println(containerPipe);
         }
-
-        PrintCollection.printLinesWithPlusCorners(boxWidth);
-
+        PrintCollection.printLinesWithPlusCorners(boxWidth - 1);
     }
 
 
@@ -170,8 +178,6 @@ public class Player extends Entity implements K
     {
         printPlayerInfo(title, false);
     }
-
-
 
 
 }
