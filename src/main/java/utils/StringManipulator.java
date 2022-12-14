@@ -1,7 +1,5 @@
 package utils;
 
-import java.sql.Time;
-
 public class StringManipulator
 {
     public static String stripEnOrEtt(String word)

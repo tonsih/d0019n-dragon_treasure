@@ -5,10 +5,25 @@ import game.data.PrintCollection;
 import game.entities.Entity;
 import game.interfaces.Printable;
 
+/**
+ * This class represents a sword, a weapon used by an entity.
+ *
+ * @author Toni Sihvola
+ * @author Ludwig Ahnqvist
+ */
 public class Sword extends Weapon implements K, Printable
 {
+    /**
+     * The amount of max. damage the carrier of the sword gains.
+     */
     private final int increaseDamage;
 
+    /**
+     * @param name Name of the sword.
+     * @param itemDesc Description of the sword.
+     * @param increaseDamage Amount of max. damage output the sword increases
+     *                        its carrier with.
+     */
     public Sword(String name, String itemDesc, int increaseDamage)
     {
         super(name, itemDesc);
@@ -17,9 +32,14 @@ public class Sword extends Weapon implements K, Printable
 
     public Sword()
     {
-        this("Ett svärd", "Ett coolt svärd", K.SWORD_DMG);
+        this(SWORD_NAME, SWORD_DESC, SWORD_DMG);
     }
 
+    /**
+     * Increases the max. damage output of the provided entity.
+     *
+     * @param entity Entity on which to apply the item effect.
+     */
     public void applyEffect(Entity entity)
     {
 
@@ -33,6 +53,9 @@ public class Sword extends Weapon implements K, Printable
                 entity.getMaxDamage());
     }
 
+    /**
+     * Prints an ASCII sword.
+     */
     @Override public void printObject()
     {
         PrintCollection.printSword();

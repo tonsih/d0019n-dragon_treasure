@@ -2,36 +2,36 @@ package game.entities;
 
 import game.data.K;
 import game.data.PrintCollection;
-import game.interfaces.Printable;
 
-public class Monster extends Entity implements K, Printable
+/**
+ * This class represents an enemy in the game, which is some kind of monster.
+ *
+ * @author Toni Sihvola
+ * @author Ludwig Ahnqvist
+ */
+public class Monster extends Entity implements K
 {
-    private final String monsterDesc;
-
-    public Monster(String name,
-                   int healthPoints,
-                   int damage,
-                   String monsterDesc)
+    /**
+     * @param name The name of the monster.
+     * @param desc A description about the monster.
+     * @param healthPoints Monster's health-points.
+     * @param maxDamage The maximal damage output of the monster.
+     */
+    public Monster(String name, String desc, int healthPoints, int maxDamage)
     {
-        super(name, healthPoints, damage);
-        this.monsterDesc = monsterDesc;
+        super(name, desc, healthPoints, maxDamage);
     }
 
     public Monster()
     {
-        this("Odjur", K.CREATURE_HP, K.CREATURE_MAX_DMG, "En ful varelse");
+        this("Odjur", "En ful varelse", K.MONSTER_HP, K.MONSTER_MAX_DMG);
     }
 
-    public String getMonsterDesc()
-    {
-        return monsterDesc;
-    }
-
-    @Override
-    public void printObject()
+    /**
+     * Prints an ASCII monster.
+     */
+    @Override public void printObject()
     {
         PrintCollection.printMonster();
     }
-
-
 }

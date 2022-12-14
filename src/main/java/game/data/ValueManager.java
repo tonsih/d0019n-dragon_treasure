@@ -4,6 +4,13 @@ import java.util.Map;
 
 public class ValueManager implements K
 {
+    /**
+     * A private no-arg constructor for the class. Prevents initiation of an
+     * instance.
+     */
+    private ValueManager()
+    {
+    }
 
 //  generatePosString class function -- Generates a string corresponding
 //  with the direction represented by the pos-parameter and returns it.

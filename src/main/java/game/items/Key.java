@@ -2,17 +2,31 @@ package game.items;
 
 import game.data.PrintCollection;
 import game.entities.Entity;
-import game.entities.Player;
 import game.interfaces.Printable;
 
+/**
+ * This class represents a key used by the player to open doors or gain access
+ * to pass through them.
+ *
+ * @author Toni Sihvola
+ * @author Ludwig Ahnqvist
+ */
 public class Key extends Item implements Printable
 {
+    /**
+     * Identifier of the room connected to the door which the key can open.
+     */
     private final int roomId;
 
+    /**
+     * @param name Name of the key.
+     * @param roomId Identifier of the room connected to the door which
+     *                the key can open.
+     */
     public Key(String name, int roomId)
     {
-       super(name, "En nyckel som öppnar rum nummer " + roomId);
-       this.roomId = roomId;
+        super(name, "En nyckel som öppnar rum nummer " + roomId);
+        this.roomId = roomId;
     }
 
     public Key(int roomId)
@@ -20,19 +34,30 @@ public class Key extends Item implements Printable
         this("En nyckel", roomId);
     }
 
-    public int getOpensRoomWithId()
+    /**
+     * @return Identifier of the room connected to the door which the key can
+     *         open.
+     */
+    public int getRoomId()
     {
-       return this.roomId;
+        return this.roomId;
     }
 
-    @Override
-    public void applyEffect(Entity entity)
-    {
-        entity.giveKey(this);
-    }
-
+    /**
+     * Prints an ASCII key.
+     */
     @Override public void printObject()
     {
         PrintCollection.printKey();
+    }
+
+    /**
+     * Gives the key to the provided entity.
+     *
+     * @param entity Entity on which to apply the item effect.
+     */
+    @Override public void applyEffect(Entity entity)
+    {
+        entity.giveKey(this);
     }
 }

@@ -10,14 +10,17 @@ public class Main
      * Contains the call to the method which sets up the game.
      *
      * @param args An array of string provided as arguments when program
-     *         is executed. Not really utilized in this program.
-     * @throws Exception
+     *              is executed. Not really utilized in this program.
+     * @throws Exception If a door is initiated with an invalid position or if
+     *                   something goes wrong while the console is being
+     *                   cleared.
      */
     public static void main(String[] args) throws Exception
     {
-        // Calls a method of a new instance of DragonTreasure, which sets up the
-        // game.
+        /*
+         * Calls a method of a new instance of DragonTreasure, which sets up the
+         * game.
+         */
         new DragonTreasure().setupGame();
     }
-
 }

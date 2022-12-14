@@ -5,11 +5,22 @@ import game.data.PrintCollection;
 import game.entities.Entity;
 import game.entities.Player;
 
+/**
+ * This class represents a specific treasure, a kitten, which the player
+ * can pick up.
+ */
 public class Kitten extends Treasure implements K
 {
-    public Kitten(String name, String itemDesc, String lockedDesc, int goldValue)
+    /**
+     * @param name Name of the cat.
+     * @param itemDesc Description about the cat.
+     * @param lockedDesc Description about the cat when observed from behind a
+     *                    locked door.
+     * @param value Value of the cat.
+     */
+    public Kitten(String name, String itemDesc, String lockedDesc, int value)
     {
-        super(name, itemDesc, lockedDesc, goldValue);
+        super(name, itemDesc, lockedDesc, value);
     }
 
     public Kitten()
@@ -17,12 +28,19 @@ public class Kitten extends Treasure implements K
         this("En kattunge", "En söt kattunge", "En hårboll som rullar.", K.KITTEN_VALUE);
     }
 
+    /**
+     * Prints an ASCII kitten.
+     */
     @Override
     public void printObject()
     {
         PrintCollection.printKitten();
     }
 
+    /**
+     *
+     * @param entity Entity on which to apply the item effect.
+     */
     @Override public void applyEffect(Entity entity)
     {
         if (entity instanceof Player)

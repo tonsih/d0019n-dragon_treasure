@@ -21,19 +21,29 @@ import java.util.*;
  */
 public class Room implements K
 {
-    /** Amount of rooms created. Used to identify each room with a unique ID. */
+    /**
+     * Amount of rooms created. Used to identify each room with a unique ID.
+     */
     private static int roomCount = 0;
 
-    /** A unique ID for the room */
+    /**
+     * A unique ID for the room
+     */
     private final int roomID;
 
-    /** Stores a room description. */
+    /**
+     * Stores a room description.
+     */
     private String roomDesc;
 
-    /** Stores an array of doors. */
+    /**
+     * Stores an array of doors.
+     */
     private final Door[] doors;
 
-    /** A room has its own keyring which can contain zero to many keys. */
+    /**
+     * A room has its own keyring which can contain zero to many keys.
+     */
     private final Keyring keyring;
 
     /**
@@ -41,15 +51,17 @@ public class Room implements K
      */
     private Treasure treasure;
 
-    /** Stores the room's items. */
+    /**
+     * Stores the room's items.
+     */
     private ArrayList<Item> items;
 
-    /** Represents the monster in the room, if one exists. */
+    /**
+     * Represents the monster in the room, if one exists.
+     */
     private Monster monster;
 
     /**
-     * Room's constructor.
-     *
      * @param roomDesc A room description.
      * @param doors Doors connected to the room.
      * @param keyring Keyring for the room.
@@ -127,7 +139,7 @@ public class Room implements K
      * @param scanner A scanner used for user input.
      * @param visualEffectManager Used for visual effects i.e. clearing
      *         the console.
-     * @return True if player wins, otherwise false.
+     * @return {@code true} if player wins, otherwise {@code false}.
      * @throws Exception If something goes wrong while clearing the console.
      */
     public boolean doBattle(Player player,
@@ -138,7 +150,7 @@ public class Room implements K
         boolean battleResult = new Battle(player,
                 this.monster,
                 scanner,
-                visualEffectManager).newBattle();
+                visualEffectManager).doBattle();
 
         if (battleResult)
         {
@@ -205,7 +217,8 @@ public class Room implements K
     }
 
     /**
-     * @return True if a treasure exists in the room, false otherwise.
+     * @return {@code true} if a treasure exists in the room, {@code false}
+     * otherwise.
      */
     public boolean hasTreasure()
     {
@@ -213,7 +226,8 @@ public class Room implements K
     }
 
     /**
-     * @return True if a monster exists in the room, false otherwise.
+     * @return {@code true} if a monster exists in the room, {@code false}
+     * otherwise.
      */
     public boolean hasMonster()
     {

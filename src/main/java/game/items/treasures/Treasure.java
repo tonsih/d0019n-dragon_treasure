@@ -3,29 +3,50 @@ package game.items.treasures;
 import game.interfaces.Printable;
 import game.items.Item;
 
+/**
+ * This class represents a treasure which the player can find and collect.
+ */
 public abstract class Treasure extends Item implements Printable
 {
-    private final int goldValue;
+    /**
+     * Treasure's value.
+     */
+    private final int value;
+
+    /**
+     * Description of the treasure when the player peeks through the keyhole
+     * of a locked door.
+     */
     private final String lockedDesc;
 
-    public Treasure(String name, String itemDesc, String lockedDesc, int goldValue)
+    /**
+     * @param name Name of the treasure.
+     * @param itemDesc Description about the treasure.
+     * @param lockedDesc Description about the treasure, when observed from
+     *                    behind a locked door.
+     * @param value Treasure's value.
+     */
+    public Treasure(String name, String itemDesc, String lockedDesc, int value)
     {
         super(name, itemDesc);
-        this.goldValue = goldValue;
+        this.value = value;
         this.lockedDesc = lockedDesc;
     }
 
-    public int getGoldValue()
-    {
-        return this.goldValue;
-    }
-
+    /**
+     * @return The description about the treasure when observed from behind
+     *         a locked door.
+     */
     public String getLockedDesc()
     {
         return this.lockedDesc;
     }
 
-    @Override
-    public abstract void printObject();
-
+    /**
+     * @return Treasure's value.
+     */
+    public int getValue()
+    {
+        return this.value;
+    }
 }

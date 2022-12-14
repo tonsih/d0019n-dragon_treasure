@@ -6,82 +6,53 @@ import game.items.treasures.Treasure;
 
 import java.util.ArrayList;
 
-// The game.entities.Player-class contains information about the player.
+/**
+ * This class represents a player-entity with which the user navigates through
+ * the game layout and engages in battles with.
+ */
 public class Player extends Entity implements K
 {
-
+    /**
+     * Player's treasures.
+     */
     private final ArrayList<Treasure> treasures;
 
-    private boolean isAlive;
-
+    /**
+     * The total amount of monsters killed by the player.
+     */
     private int totalMonstersKilled;
 
-
-    //  game.entities.Player-constructor -- Takes a name (string) as an
-    //  argument and
-    //  assigns the
-//  value to the corresponding object variable.
+    /**
+     * @param name Player's name.
+     */
     public Player(String name)
     {
-        super(name, K.INITIAL_PLAYER_HP, K.INITIAL_PLAYER_DMG);
+        super(name,
+                K.PLAYER_DESC,
+                K.INITIAL_PLAYER_HP,
+                K.INITIAL_PLAYER_MAX_DMG,
+                true,
+                true);
         this.treasures = new ArrayList<>();
-        this.isAlive = true;
         this.totalMonstersKilled = 0;
     }
 
-    public boolean isAlive()
-    {
-        return this.isAlive;
-    }
-
-
-    public void addTreasure(Treasure treasure)
-    {
-        this.treasures.add(treasure);
-    }
-
-
-    public ArrayList<Treasure> getTreasures()
-    {
-        return this.treasures;
-    }
-
-    public int getTreasuresTotalValue()
-    {
-        int totalValue = 0;
-        for (Treasure treasure : this.treasures)
-        {
-            totalValue += treasure.getGoldValue();
-        }
-        return totalValue;
-    }
-
-
-    public String treasuresString()
-    {
-        String treasureStr = "";
-        for (Treasure treasure : this.treasures)
-        {
-            treasureStr +=
-                    treasure.getName() + " (värde: " + treasure.getGoldValue() +
-                            ")\n";
-        }
-        return treasureStr + "\nTotal värde: " + this.getTreasuresTotalValue();
-    }
-
-
-    public void setAlive(boolean isAlive)
-    {
-        this.isAlive = isAlive;
-    }
-
-
-    public void addMonsterKilled()
-    {
-        this.totalMonstersKilled++;
-    }
-
-
+    /**
+     * Prints a box with player information such as player name, HP, Max damage
+     * and total monsters killed. Prints out player's treasures and their value
+     * also if the option for printing treasures is checked.
+     *
+     * <p>The method determines its width by comparing all the rows of text,
+     * which are to be contained inside the box and finds the row with the
+     * biggest length. This length becomes the value used to determine how wide
+     * the printed box will be.
+     *
+     * @param title The title printed out on the title row in the box.
+     * @param treasuresIncluded Option to also print player's treasures,
+     *         their values and the total value inside the printed box.
+     *         {@code true} to print the treasures {@code false} to not do
+     *         that.
+     */
     public void printPlayerInfo(String title, boolean treasuresIncluded)
     {
         String containerPipe = "|";
@@ -115,7 +86,7 @@ public class Player extends Entity implements K
                         containerPipe,
                         K.CONTAINER_LABELS.get("TOTAL_VALUE"),
                         this.getTreasuresTotalValue(),
-                        K.CONTAINER_LABELS.get("CURRENCY"));
+                        K.CURRENCY);
             } else tempContainers = new String[tempLength + 2];
 
             tempContainers[containerRows.length] = containerPipe;
@@ -138,13 +109,10 @@ public class Player extends Entity implements K
                         containerPipe,
                         treasure.getName(),
                         K.CONTAINER_LABELS.get("VALUE"),
-                        treasure.getGoldValue(),
+                        treasure.getValue(),
                         K.CURRENCY);
             }
-
-
             containerRows = tempContainers;
-
         }
         int boxWidth = containerRows[0].length() + containerPipe.length();
 
@@ -155,11 +123,10 @@ public class Player extends Entity implements K
                 boxWidth = s.length() + containerPipe.length();
             }
         }
-
         PrintCollection.printLinesWithPlusCorners(boxWidth - 1);
         int amountOfSpaces = boxWidth - containerRows[0].length();
         System.out.print(containerRows[0]);
-        PrintCollection.printAmountOfSpaces(amountOfSpaces);
+        PrintCollection.printSpaces(amountOfSpaces);
         System.out.println(containerPipe);
         PrintCollection.printLinesWithPlusCorners(boxWidth - 1);
 
@@ -167,17 +134,48 @@ public class Player extends Entity implements K
         {
             amountOfSpaces = boxWidth - containerRows[i].length();
             System.out.print(containerRows[i]);
-            PrintCollection.printAmountOfSpaces(amountOfSpaces);
+            PrintCollection.printSpaces(amountOfSpaces);
             System.out.println(containerPipe);
         }
         PrintCollection.printLinesWithPlusCorners(boxWidth - 1);
     }
-
 
     public void printPlayerInfo(String title)
     {
         printPlayerInfo(title, false);
     }
 
+    /**
+     * @return Total value of all player's treasures.
+     */
+    public int getTreasuresTotalValue()
+    {
+        int totalValue = 0;
+        for (Treasure treasure : this.treasures)
+        {
+            totalValue += treasure.getValue();
+        }
+        return totalValue;
+    }
 
+    /**
+     * @param treasure Treasure to be added to the player's treasure
+     *         array.
+     */
+    public void addTreasure(Treasure treasure)
+    {
+        this.treasures.add(treasure);
+    }
+
+    /**
+     * Increment the total amount of monsters killed by one.
+     */
+    public void addMonsterKilled()
+    {
+        this.totalMonstersKilled++;
+    }
+
+    @Override public void printObject()
+    {
+    }
 }
