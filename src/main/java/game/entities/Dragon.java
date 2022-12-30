@@ -6,7 +6,7 @@ import game.data.PrintCollection;
 /**
  * This class represents an enemy monster which is a dragon.
  */
-public class Dragon extends Monster
+public class Dragon extends Monster implements K
 {
     /**
      * @param name Name of the dragon.
@@ -21,7 +21,7 @@ public class Dragon extends Monster
 
     public Dragon()
     {
-        this(K.DRAGON_NAME, K.DRAGON_DESC, K.DRAGON_HP, K.DRAGON_MAX_DMG);
+        this(DRAGON_NAME, DRAGON_DESC, DRAGON_HP, DRAGON_MAX_DMG);
     }
 
     /**

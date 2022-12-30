@@ -5,9 +5,6 @@ import game.items.Item;
 /**
  * This class represents a skeleton used to identify and specify attributes for
  * an item which is a weapon used by an entity.
- *
- * @author Toni Sihvola
- * @author Ludwig Ahnqvist
  */
 public abstract class Weapon extends Item
 {

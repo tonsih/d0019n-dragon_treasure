@@ -7,9 +7,6 @@ import game.interfaces.Printable;
 /**
  * This class represents a key used by the player to open doors or gain access
  * to pass through them.
- *
- * @author Toni Sihvola
- * @author Ludwig Ahnqvist
  */
 public class Key extends Item implements Printable
 {

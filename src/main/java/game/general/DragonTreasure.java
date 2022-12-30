@@ -25,8 +25,6 @@ import java.util.Scanner;
  * {@code Dungeon}-instance which starts the game. Handles the ending of the
  * game as well.
  *
- * @author Toni Sihvola
- * @author Ludwig Ahnqvist
  */
 public class DragonTreasure implements K
 {
@@ -54,17 +52,17 @@ public class DragonTreasure implements K
     public DragonTreasure()
     {
         this.roomArr = new Room[ROOM_AMOUNT];
-        this.roomDescArr = K.roomDescArr;
+        this.roomDescArr = ROOM_DESCRIPTIONS;
         this.scanner = new Scanner(System.in);
         this.visualEffectManager = new VisualEffectManager();
     }
 
     /**
-     * Sets up the game by assigning a {@code Room}-array with {@code Room}
-     * -objects. The {@code Room}-objects contain information about their
-     * attributes, such as which {@code Door}- and {@code Item}-objects are
-     * assigned for them. The method also takes care of starting a new game once
-     * one has been set up, and lastly handles the ending of the game.
+     * Sets up the game. Creates all the rooms and initializes them with their
+     * doors and other specified attributes (such as items, monsters etc.);
+     * connects the rooms with each other; creates a player with the user
+     * provided name; starts a new game after the setup and ends the game after
+     * the game is over.
      *
      * @throws Exception If {@code Door}-instances are initiated with an
      *                   invalid position as an argument, or if something goes
@@ -307,7 +305,7 @@ public class DragonTreasure implements K
             if (ansString.isBlank()) continue;
 
             char ansChar = ansString.charAt(0);
-            Command charCommand = ValueManager.getCommandValueWithChar(ansChar);
+            Command charCommand = ValueManager.getCommandWithChar(ansChar);
             if (charCommand != null)
             {
                 switch (charCommand)

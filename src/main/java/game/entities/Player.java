@@ -28,9 +28,9 @@ public class Player extends Entity implements K
     public Player(String name)
     {
         super(name,
-                K.PLAYER_DESC,
-                K.INITIAL_PLAYER_HP,
-                K.INITIAL_PLAYER_MAX_DMG,
+                PLAYER_DESC,
+                INITIAL_PLAYER_HP,
+                INITIAL_PLAYER_MAX_DMG,
                 true,
                 true);
         this.treasures = new ArrayList<>();
@@ -58,13 +58,13 @@ public class Player extends Entity implements K
         String containerPipe = "|";
         String[] containerRows = new String[]{String.format("%s", title),
                 String.format("%s: %s",
-                        K.CONTAINER_LABELS.get("NAME"),
+                        CONTAINER_LABELS.get("NAME"),
                         this.name), String.format("%s: %d",
-                K.CONTAINER_LABELS.get("HP"),
+                CONTAINER_LABELS.get("HP"),
                 this.healthPoints), String.format("%s: %d",
-                K.CONTAINER_LABELS.get("MAX_DMG"),
+                CONTAINER_LABELS.get("MAX_DMG"),
                 this.maxDamage), String.format("%s: %d",
-                K.CONTAINER_LABELS.get("MONSTERS_KILLED"),
+                CONTAINER_LABELS.get("MONSTERS_KILLED"),
                 this.totalMonstersKilled)};
 
         for (int i = 0; i < containerRows.length; i++)
@@ -84,22 +84,23 @@ public class Player extends Entity implements K
                 tempContainers[tempContainers.length - 1] = String.format(
                         "%s %s: %d %s",
                         containerPipe,
-                        K.CONTAINER_LABELS.get("TOTAL_VALUE"),
+                        CONTAINER_LABELS.get("TOTAL_VALUE"),
                         this.getTreasuresTotalValue(),
-                        K.CURRENCY);
+                        CURRENCY);
             } else tempContainers = new String[tempLength + 2];
 
             tempContainers[containerRows.length] = containerPipe;
             tempContainers[containerRows.length + 1] =
                     this.treasures.size() > 0 ? containerPipe + " " +
-                            K.CONTAINER_LABELS.get("TREASURES") + ":" :
+                            CONTAINER_LABELS.get("TREASURES") + ":" :
                             containerPipe + " " +
-                                    K.CONTAINER_LABELS.get("NO_TREASURES");
+                                    CONTAINER_LABELS.get("NO_TREASURES");
 
-            for (int i = 0; i < containerRows.length; i++)
-            {
-                tempContainers[i] = containerRows[i];
-            }
+            System.arraycopy(containerRows,
+                    0,
+                    tempContainers,
+                    0,
+                    containerRows.length);
 
             for (int i = 0; i < this.treasures.size(); i++)
             {
@@ -108,9 +109,9 @@ public class Player extends Entity implements K
                         "%s %s (%s: %d %s)",
                         containerPipe,
                         treasure.getName(),
-                        K.CONTAINER_LABELS.get("VALUE"),
+                        CONTAINER_LABELS.get("VALUE"),
                         treasure.getValue(),
-                        K.CURRENCY);
+                        CURRENCY);
             }
             containerRows = tempContainers;
         }

@@ -7,9 +7,6 @@ import java.util.List;
 
 /**
  * This class represents an item which is a collection of none to many keys.
- *
- * @author Toni Sihvola
- * @author Ludwig Ahnqvist
  */
 public class Keyring extends Item
 {

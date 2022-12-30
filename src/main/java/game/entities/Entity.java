@@ -115,7 +115,9 @@ public abstract class Entity implements Printable
             }
         }
         for (Consumable consumable : consumedItems)
+        {
             this.consumables.remove(consumable);
+        }
     }
 
     /**
@@ -129,9 +131,10 @@ public abstract class Entity implements Printable
      */
     public boolean hasKeyForRoom(Room room)
     {
-        for (int i = 0; i < this.keyring.size(); i++)
-            if (this.keyring.getKeys().get(i).getRoomId() ==
-                    room.getRoomID()) return true;
+        for (Key key : this.keyring.getKeys())
+        {
+            if (key.getRoomId() == room.getRoomID()) return true;
+        }
         return false;
     }
 

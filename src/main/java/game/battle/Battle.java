@@ -16,11 +16,8 @@ import java.util.Scanner;
 
 /**
  * This class represents a battle, where a player battles against an entity.
- *
- * @author Toni Sihvola
- * @author Ludwig Ahnqvist
  */
-public class Battle
+public class Battle implements K
 {
     /**
      * Represents the player in a battle operated by the user.
@@ -217,7 +214,7 @@ public class Battle
                 loser.getName());
         System.out.print(winsString);
         PrintCollection.printSpaces(
-                K.AMOUNT_OF_LINES - winsString.length());
+                AMOUNT_OF_LINES - winsString.length());
         System.out.println(" |");
         PrintCollection.printLinesWithPlusCorners();
     }

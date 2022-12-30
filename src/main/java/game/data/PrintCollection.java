@@ -46,7 +46,7 @@ public class PrintCollection implements K
 
     public static void printLinesWithPlusCorners()
     {
-        printLinesWithPlusCorners(K.AMOUNT_OF_LINES);
+        printLinesWithPlusCorners(AMOUNT_OF_LINES);
     }
 
     /**
@@ -65,7 +65,7 @@ public class PrintCollection implements K
      */
     public static void printConsoleMarker()
     {
-        System.out.print(K.CONSOLE_MARKER);
+        System.out.print(CONSOLE_MARKER);
     }
 
     /**
@@ -73,7 +73,7 @@ public class PrintCollection implements K
      */
     public static void printEscapeOption()
     {
-        System.out.printf("%s\n", K.ESCAPE_OPTION_MSG);
+        System.out.printf("%s\n", ESCAPE_OPTION_MSG);
     }
 
     public static void printDragonTreasureLogo()

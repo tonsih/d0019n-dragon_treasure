@@ -9,9 +9,6 @@ import game.interfaces.Printable;
 /**
  * This class represents an explosive weapon, a grenade used by an entity during
  * battle to cause damage on the attacked entity.
- *
- * @author Toni Sihvola
- * @author Ludwig Ahnqvist
  */
 public class Grenade extends Weapon implements K, Printable
 {

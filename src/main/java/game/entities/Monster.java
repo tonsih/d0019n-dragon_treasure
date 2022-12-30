@@ -5,9 +5,6 @@ import game.data.PrintCollection;
 
 /**
  * This class represents an enemy in the game, which is some kind of monster.
- *
- * @author Toni Sihvola
- * @author Ludwig Ahnqvist
  */
 public class Monster extends Entity implements K
 {
@@ -24,7 +21,7 @@ public class Monster extends Entity implements K
 
     public Monster()
     {
-        this("Odjur", "En ful varelse", K.MONSTER_HP, K.MONSTER_MAX_DMG);
+        this(MONSTER_NAME, MONSTER_DESC, MONSTER_HP, MONSTER_MAX_DMG);
     }
 
     /**

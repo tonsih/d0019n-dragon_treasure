@@ -28,7 +28,7 @@ public interface K
     /**
      * Descriptions available to be applied on rooms in the game.
      */
-    String[] roomDescArr = new String[]{
+    String[] ROOM_DESCRIPTIONS = new String[]{
             "Rummet är upplyst av några ljus som sitter på ett bord framför " +
                     "dig.",
 
@@ -195,6 +195,16 @@ public interface K
      * Default amount of damage caused by a sword.
      */
     int SWORD_DMG = 6;
+
+    /**
+     * Default name for a monster.
+     */
+    String MONSTER_NAME = "Odjur";
+
+    /**
+     * Default description for a monster.
+     */
+    String MONSTER_DESC = "En ful varelse";
 
     /**
      * Default health points assigned to a regular monster.

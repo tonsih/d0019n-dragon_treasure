@@ -134,7 +134,7 @@ public class Dungeon implements K
             System.out.println();
 
             // Prints a box with player information, such as HP, Max. DMG etc.
-            this.player.printPlayerInfo(K.CONTAINER_LABELS.get(
+            this.player.printPlayerInfo(CONTAINER_LABELS.get(
                     "PLAYER_INFORMATION"));
 
             // Prints out the ID of the current room.
@@ -160,7 +160,7 @@ public class Dungeon implements K
             char ansChar = ansStr.charAt(0);
             this.player.useConsumablesWithCommand(ansChar);
             Command commandValueOfAns =
-                    ValueManager.getCommandValueWithChar(ansChar);
+                    ValueManager.getCommandWithChar(ansChar);
             if (commandValueOfAns != null)
             {
                 switch (commandValueOfAns)
@@ -284,7 +284,7 @@ public class Dungeon implements K
                     ValueManager.generatePosString(this.entrancePos)
                             .toLowerCase(),
                     enterCaveOptionString,
-                    K.ESCAPE_OPTION_MSG);
+                    ESCAPE_OPTION_MSG);
 
             PrintCollection.printConsoleMarker();
             String ans = scanner.nextLine();
@@ -300,7 +300,7 @@ public class Dungeon implements K
             }
         }
         PrintCollection.printLinesWithPlusCorners();
-        System.out.println(K.LEFT_CAVE_MSG);
+        System.out.println(LEFT_CAVE_MSG);
         return true;
     }
 
