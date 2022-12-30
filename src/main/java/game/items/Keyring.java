@@ -83,9 +83,6 @@ public class Keyring extends Item
      */
     @Override public void applyEffect(Entity entity)
     {
-        for (Key key : this.keys)
-        {
-            key.applyEffect(entity);
-        }
+        for (Key key : this.keys) key.applyEffect(entity);
     }
 }

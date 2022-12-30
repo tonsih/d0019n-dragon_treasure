@@ -1,12 +1,10 @@
 package utils;
 
-import game.data.K;
-
 /**
  * This class represents a manager expected to be utilized for managing visual
  * effects.
  */
-public class VisualEffectManager implements K
+public class VisualEffectManager
 {
     /**
      * {@code true} if console should be cleared, {@code false} otherwise.

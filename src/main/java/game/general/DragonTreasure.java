@@ -29,12 +29,12 @@ import java.util.Scanner;
 public class DragonTreasure implements K
 {
     /**
-     * Represents an array containing objects of the type {@code Room}.
+     * Represents an array containing rooms.
      */
     private final Room[] roomArr;
 
     /**
-     * An array of {@code Room} descriptions.
+     * An array of room descriptions.
      */
     private final String[] roomDescArr;
 
