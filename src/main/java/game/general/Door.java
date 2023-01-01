@@ -41,7 +41,7 @@ public class Door
     {
         if (ValueManager.charIsDirection(pos)) this.position = pos;
         else throw new IllegalArgumentException(
-                "A door was not defined to be in a valid " + "position [" +
+                "A door was not defined to be in a valid position [" +
                         ValueManager.directionCommandsToString() + "]");
 
         this.locked = locked;

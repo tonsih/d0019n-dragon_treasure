@@ -15,9 +15,6 @@ import java.util.*;
  * This class represents one room. Every room has a unique ID and a room can
  * have various attributes, such as a room description, connected doors, a
  * monster, items, a treasure etc...
- *
- * @author Toni Sihvola
- * @author Ludwig Ahnqvist
  */
 public class Room implements K
 {
@@ -78,6 +75,7 @@ public class Room implements K
     {
         this.roomID = generateRoomID();
         this.roomDesc = roomDesc;
+        if (doors.length > DIRECTIONS.size()) throw new IllegalArgumentException(String.format("The max amount of doors war exceeded (%d)", DIRECTIONS.size()));
         this.doors = Objects.requireNonNullElseGet(doors, () -> new Door[0]);
         this.keyring = Objects.requireNonNullElseGet(keyring, Keyring::new);
         this.treasure = treasure;

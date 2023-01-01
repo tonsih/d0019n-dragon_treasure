@@ -1,5 +1,6 @@
 package game.items.treasures;
 
+import game.data.K;
 import game.data.PrintCollection;
 import game.entities.Entity;
 import game.entities.Player;
@@ -8,7 +9,7 @@ import game.entities.Player;
  * This class represents a specific treasure, salty sticks, which the player
  * can pick up.
  */
-public class SaltaPinnar extends Treasure
+public class SaltaPinnar extends Treasure implements K
 {
     /**
      * @param name Name of the salty sticks.
@@ -27,10 +28,8 @@ public class SaltaPinnar extends Treasure
 
     public SaltaPinnar()
     {
-        this("Salta pinnar",
-                "salta pinnar som ser ut som pretzels",
-                "något smaskigt och saltigt.",
-                6000000);
+
+        this(SALTA_PINNAR_NAME, SALTA_PINNAR_DESC, SALTA_PINNAR_LOCKED_DESC, SALTA_PINNAR_VALUE);
     }
 
     /**

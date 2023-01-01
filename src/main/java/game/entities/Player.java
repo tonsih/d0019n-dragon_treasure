@@ -38,7 +38,7 @@ public class Player extends Entity implements K
     }
 
     /**
-     * Prints a box with player information such as player name, HP, Max damage
+     * Prints a box with player information such as player name, HP, max damage
      * and total monsters killed. Prints out player's treasures and their value
      * also if the option for printing treasures is checked.
      *

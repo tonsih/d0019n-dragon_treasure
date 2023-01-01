@@ -109,7 +109,7 @@ public interface K
     /**
      * Message asking for the user's program execution environment.
      */
-    String ENVIRONMENT_CHECK_MSG = String.format("Jag kör programmet via en IDE [%c]\n" +
+    String ENVIRONMENT_CHECK_MSG = String.format("Jag kör programmet via en IDE [%c] (Välj detta alternativ om fel uppstår, när programmet körs via dem andra alternativen)\n" +
                     "Jag kör programmet via en Unix terminal eller Windows CMD [%c]\n"
             , Command.IDE_OPTION.commandValue, Command.TERMINAL_OPTION.commandValue);
 
@@ -177,6 +177,11 @@ public interface K
     int HEALTH_POTION_HP = 6;
 
     /**
+     * Default name for a grenade.
+     */
+    String GRENADE_NAME = "En granat";
+
+    /**
      * Default amount of damage expected to be caused by a grenade-item.
      */
     int GRENADE_DMG = 8;
@@ -237,7 +242,44 @@ public interface K
     int DRAGON_MAX_DMG = 3;
 
     /**
+     * Default name for a kitten.
+     */
+    String KITTEN_NAME = "En kattunge";
+
+    /**
+     * Default description for a kitten.
+     */
+    String KITTEN_DESC = "en söt kattunge";
+
+    /**
+     * Default description for a kitten observed through a locked door's
+     * keyhole.
+     */
+    String KITTEN_LOCKED_DESC = "en hårboll som rullar";
+
+    /**
      * Default value of a kitten-treasure.
      */
     int KITTEN_VALUE = 500000;
+
+    /**
+     * Default name for salta pinnar.
+     */
+    String SALTA_PINNAR_NAME = "Salta pinnar";
+
+    /**
+     * Default description for salta pinnar.
+     */
+    String SALTA_PINNAR_DESC = "salta pinnar som ser ut som pretzels";
+
+    /**
+     * Default description for salta pinnar when observed through the keyhole of
+     * a locked door.
+     */
+    String SALTA_PINNAR_LOCKED_DESC = "något smaskigt och saltigt";
+
+    /**
+     * Default value of salta pinnar.
+     */
+    int SALTA_PINNAR_VALUE = 6000000;
 }

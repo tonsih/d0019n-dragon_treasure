@@ -65,8 +65,9 @@ public class DragonTreasure implements K
      * the game is over.
      *
      * @throws Exception If {@code Door}-instances are initiated with an
-     *                   invalid position as an argument, or if something goes
-     *                   wrong while the console is being cleared.
+     *                   invalid position as an argument, if something goes
+     *                   wrong while the console is being cleared or if the
+     *                   amount of doors in a room exceeds the maximal amount.
      */
     public void setupGame() throws Exception
     {

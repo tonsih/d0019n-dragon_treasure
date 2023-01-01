@@ -6,17 +6,13 @@ package game.data;
  */
 public enum Command implements K
 {
-    /*
-     * Direction-commands
-     */
+    // Direction-commands.
     NORTH(N),
     SOUTH(S),
     WEST(W),
     EAST(E),
 
-    /*
-     * Other commands
-     */
+    // Miscellaneous commands.
     PICKUP_ITEM('p'),
     PICKUP_KEY('f'),
     CONSUME_HEALTH_POTION('d'),

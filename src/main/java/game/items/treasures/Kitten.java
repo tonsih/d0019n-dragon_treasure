@@ -25,7 +25,7 @@ public class Kitten extends Treasure implements K
 
     public Kitten()
     {
-        this("En kattunge", "En söt kattunge", "En hårboll som rullar.", KITTEN_VALUE);
+        this(KITTEN_NAME, KITTEN_DESC, KITTEN_LOCKED_DESC, KITTEN_VALUE);
     }
 
     /**
