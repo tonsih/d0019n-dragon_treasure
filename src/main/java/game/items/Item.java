@@ -4,9 +4,6 @@ import game.entities.Entity;
 
 /**
  * This class represents a skeleton for game-items.
- *
- * @author Toni Sihvola
- * @author Ludwig Ahnqvist
  */
 public abstract class Item
 {
