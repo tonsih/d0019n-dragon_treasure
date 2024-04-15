@@ -7,18 +7,18 @@ import game.entities.Entity;
 import game.entities.Player;
 import game.items.Item;
 import game.items.consumables.Consumable;
-import utils.VisualEffectManager;
 import utils.TimeManipulator;
+import utils.VisualEffectManager;
 
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 /**
  * This class represents a battle, where a player battles against an entity.
  */
-public class Battle implements K
-{
+public class Battle implements K {
     /**
      * Represents the player in a battle operated by the user.
      */
@@ -45,16 +45,15 @@ public class Battle implements K
     private final VisualEffectManager visualEffectManager;
 
     /**
-     * @param player Player in the battle.
-     * @param entity Entity which fights the player.
-     * @param scanner Scanner for taking user input.
+     * @param player              Player in the battle.
+     * @param entity              Entity which fights the player.
+     * @param scanner             Scanner for taking user input.
      * @param visualEffectManager Used to clear the console.
      */
     public Battle(Player player,
                   Entity entity,
                   Scanner scanner,
-                  VisualEffectManager visualEffectManager)
-    {
+                  VisualEffectManager visualEffectManager) {
         this.player = player;
         this.entity = entity;
         this.battleInventory = getBattleInventory(this.player);
@@ -69,31 +68,26 @@ public class Battle implements K
      * @throws Exception If something goes wrong while the console is being
      *                   cleared.
      */
-    public boolean doBattle() throws Exception
-    {
+    public boolean doBattle() throws Exception {
         TimeManipulator.wait(500);
         System.out.printf("%s dyker upp\n", this.entity.getDesc());
         TimeManipulator.wait(1000);
         this.entity.printObject();
         TimeManipulator.wait(1000);
 
-        while (true)
-        {
+        while (true) {
             TimeManipulator.wait(500);
             this.doAttack(this.entity, this.player);
             TimeManipulator.wait(1000);
 
-            if (!this.player.isAlive())
-            {
+            if (!this.player.isAlive()) {
                 this.printWinsMessage(this.entity, this.player);
                 return false;
-            } else if (!this.battlePlayerMenu())
-            {
+            } else if (!this.battlePlayerMenu()) {
                 this.visualEffectManager.clearConsole();
                 return false;
             }
-            if (!this.entity.isAlive())
-            {
+            if (!this.entity.isAlive()) {
                 this.printWinsMessage(this.player, this.entity);
                 player.addMonsterKilled();
                 return true;
@@ -108,14 +102,12 @@ public class Battle implements K
      * consumables.
      *
      * @return {@code true} if the player chooses to exit the game.
-     *         {@code false} otherwise.
+     * {@code false} otherwise.
      * @throws Exception If something goes wrong while the console is being
      *                   cleared.
      */
-    private boolean battlePlayerMenu() throws Exception
-    {
-        while (true)
-        {
+    private boolean battlePlayerMenu() throws Exception {
+        while (true) {
             System.out.println();
             printBattleWeaponOptions();
             printAttackOption();
@@ -133,20 +125,16 @@ public class Battle implements K
             if (ansChar == Command.EXIT_GAME.commandValue) return false;
 
             Item battleItem = getBattleItemWithCommand(ansChar);
-            if (ansChar == Command.ATTACK.commandValue || battleItem != null)
-            {
+            if (ansChar == Command.ATTACK.commandValue || battleItem != null) {
                 this.entity.printObject();
 
-                if (ansChar == Command.ATTACK.commandValue)
-                {
+                if (ansChar == Command.ATTACK.commandValue) {
                     this.doAttack(this.player, this.entity);
-                } else
-                {
+                } else {
                     this.battleInventory.remove(battleItem);
                     this.player.removeItem(battleItem);
 
-                    if (battleItem instanceof Consumable)
-                    {
+                    if (battleItem instanceof Consumable) {
                         this.player.useConsumablesWithCommand(ansChar);
                     } else battleItem.applyEffect(this.entity);
                 }
@@ -164,11 +152,10 @@ public class Battle implements K
      * the attacker's max damage output.
      *
      * @param attacker Entity which performs the attack on the attacked
-     *         entity.
+     *                 entity.
      * @param attacked Entity attacked on by the attacker entity.
      */
-    private void doAttack(Entity attacker, Entity attacked)
-    {
+    private void doAttack(Entity attacker, Entity attacked) {
         int inflictedDamage = new Random().nextInt(attacker.getMaxDamage()) + 1;
         attacked.setHealthPoints(attacked.getHealthPoints() - inflictedDamage);
         printAttackMessage(attacker, attacked, inflictedDamage);
@@ -180,15 +167,14 @@ public class Battle implements K
      * attacker on the attacked and how much health the attacked has left in
      * total after the attack was performed.
      *
-     * @param attacker Entity which performed an attack.
-     * @param attacked Entity which was attacked.
+     * @param attacker     Entity which performed an attack.
+     * @param attacked     Entity which was attacked.
      * @param inflictedDMG Amount of damage inflicted on the attacked
-     *         entity.
+     *                     entity.
      */
     private void printAttackMessage(Entity attacker,
                                     Entity attacked,
-                                    int inflictedDMG)
-    {
+                                    int inflictedDMG) {
         System.out.printf("%s attackerar %s och gör %d skada - (%s HP: %d)\n",
                 attacker.getName(),
                 attacked.getName(),
@@ -201,22 +187,22 @@ public class Battle implements K
      * Prints a message with information about which entity won the battle.
      *
      * @param winner Entity which lost the battle.
-     * @param loser Entity which won the battle.
+     * @param loser  Entity which won the battle.
      * @throws Exception If something goes wrong while clearing the console.
      */
-    private void printWinsMessage(Entity winner, Entity loser) throws Exception
-    {
+    private void printWinsMessage(Entity winner, Entity loser) throws Exception {
         this.visualEffectManager.clearConsole();
 
-        PrintCollection.printLinesWithPlusCorners();
         String winsString = String.format("| %s besegrar %s!",
                 winner.getName(),
                 loser.getName());
+
+        PrintCollection.printLinesWithPlusCorners(winsString.length());
+
         System.out.print(winsString);
-        PrintCollection.printSpaces(
-                AMOUNT_OF_LINES - winsString.length());
         System.out.println(" |");
-        PrintCollection.printLinesWithPlusCorners();
+
+        PrintCollection.printLinesWithPlusCorners(winsString.length());
     }
 
     /**
@@ -226,16 +212,13 @@ public class Battle implements K
      * @param player The player in the battle.
      * @return Battle items (with consumables included)
      */
-    private ArrayList<Item> getBattleInventory(Player player)
-    {
+    private ArrayList<Item> getBattleInventory(Player player) {
         ArrayList<Item> items = new ArrayList<>(player.getItems());
         items.addAll(player.getConsumables());
-        ArrayList<Item> tempBattleInventory = new ArrayList<>();
-        for (Item item : items)
-        {
-            if (item.getUsableDuringBattle()) tempBattleInventory.add(item);
-        }
-        return tempBattleInventory;
+
+        return items.stream()
+                .filter(Item::getUsableDuringBattle)
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     /**
@@ -244,12 +227,10 @@ public class Battle implements K
      *
      * @param c Character representing the use command of item.
      * @return {@code true} if item with the provided use command exists in the
-     *         battle inventory. {@code false} otherwise.
+     * battle inventory. {@code false} otherwise.
      */
-    private Item getBattleItemWithCommand(char c)
-    {
-        for (Item item : battleInventory)
-        {
+    private Item getBattleItemWithCommand(char c) {
+        for (Item item : battleInventory) {
             if (c == item.getUseCommand()) return item;
         }
         return null;
@@ -258,22 +239,18 @@ public class Battle implements K
     /**
      * Prints the weapons available for use by the player during battle.
      */
-    private void printBattleWeaponOptions()
-    {
-        for (Item item : battleInventory)
-        {
-            System.out.printf("Använd %s [%c]\n",
-                    item.getName().toLowerCase(),
-                    item.getUseCommand());
-        }
+    private void printBattleWeaponOptions() {
+        battleInventory
+                .forEach(item -> System.out.printf("Använd %s [%c]\n",
+                        item.getName().toLowerCase(),
+                        item.getUseCommand()));
     }
 
     /**
      * Prints the option for the player to attack with the valid
      * attack-command.
      */
-    private void printAttackOption()
-    {
+    private void printAttackOption() {
         System.out.printf("Attackera [%c]\n", Command.ATTACK.commandValue);
     }
 }

@@ -7,7 +7,9 @@ import game.data.ValueManager;
 import game.entities.Dragon;
 import game.entities.Monster;
 import game.entities.Player;
-import game.items.*;
+import game.items.Item;
+import game.items.Key;
+import game.items.Keyring;
 import game.items.consumables.HealthPotion;
 import game.items.treasures.Kitten;
 import game.items.treasures.SaltaPinnar;
@@ -24,10 +26,8 @@ import java.util.Scanner;
  * / Windows CMD) and prompts the user for a player name. Initiates a
  * {@code Dungeon}-instance which starts the game. Handles the ending of the
  * game as well.
- *
  */
-public class DragonTreasure implements K
-{
+public class DragonTreasure implements K {
     /**
      * Represents an array containing rooms.
      */
@@ -49,8 +49,7 @@ public class DragonTreasure implements K
      */
     private final Scanner scanner;
 
-    public DragonTreasure()
-    {
+    public DragonTreasure() {
         this.roomArr = new Room[ROOM_AMOUNT];
         this.roomDescArr = ROOM_DESCRIPTIONS;
         this.scanner = new Scanner(System.in);
@@ -69,10 +68,9 @@ public class DragonTreasure implements K
      *                   wrong while the console is being cleared or if the
      *                   amount of doors in a room exceeds the maximal amount.
      */
-    public void setupGame() throws Exception
-    {
+    public void setupGame() throws Exception {
 
-    // @formatter:off
+        // @formatter:off
     /*
      *==========================================================================
      *                           START OF MAP LAYOUT
@@ -176,8 +174,7 @@ public class DragonTreasure implements K
          * the doors were initiated in the room and regardless of which room the
          * player is currently positioned in..
          */
-        for (Room room : roomArr)
-        {
+        for (Room room : roomArr) {
             if (room.getDoors().length > 1) room.sortDoorsByDirection();
         }
 
@@ -213,10 +210,10 @@ public class DragonTreasure implements K
          * -instance as arguments is.
          */
         Dungeon dungeon = new Dungeon(player,
-                                      this.roomArr[0],
-                                      E,
-                                      this.scanner,
-                                      this.visualEffectManager);
+                this.roomArr[0],
+                E,
+                this.scanner,
+                this.visualEffectManager);
 
         dungeon.playGame();
 
@@ -233,11 +230,10 @@ public class DragonTreasure implements K
      * corresponding ASCII-art and the player stats.
      *
      * @param dungeon The dungeon to be referred to for determining the
-     *         game result (win/lose).
-     * @param player The player which the statistics will refer to.
+     *                game result (win/lose).
+     * @param player  The player which the statistics will refer to.
      */
-    public void endGame(Dungeon dungeon, Player player)
-    {
+    public void endGame(Dungeon dungeon, Player player) {
         if (dungeon.getGameWon()) PrintCollection.printWinASCII();
         else PrintCollection.printLoseASCII();
 
@@ -254,18 +250,16 @@ public class DragonTreasure implements K
      * quit the program.
      *
      * @return Returns the name of the player inputted by the user, or
-     *         {@code null}. Trims the beginning and the end of the returned
-     *         string from spaces and replaces multiple spaces with just one
-     *         from anywhere besides the beginning or the end of the string.
-     *         Returns null if user decides to exit the program by providing
-     *         the exit-command as input.
+     * {@code null}. Trims the beginning and the end of the returned
+     * string from spaces and replaces multiple spaces with just one
+     * from anywhere besides the beginning or the end of the string.
+     * Returns null if user decides to exit the program by providing
+     * the exit-command as input.
      * @throws Exception If something goes wrong with clearing the console.
      */
-    private String startPrompt() throws Exception
-    {
+    private String startPrompt() throws Exception {
         String ans;
-        do
-        {
+        do {
             PrintCollection.printDragonTreasureLogo();
             System.out.println(NAME_PROMPT_MSG);
 
@@ -289,14 +283,12 @@ public class DragonTreasure implements K
      * work when the program is run from an IDE.
      *
      * @return Returns {@code false} if the user chooses to exit the game.
-     *         Returns {@code true} otherwise if the user chooses one of the two
-     *         first provided alternatives.
+     * Returns {@code true} otherwise if the user chooses one of the two
+     * first provided alternatives.
      * @throws Exception If something goes wrong with clearing the console.
      */
-    private boolean environmentCheckPrompt() throws Exception
-    {
-        while (true)
-        {
+    private boolean environmentCheckPrompt() throws Exception {
+        while (true) {
             PrintCollection.printLinesWithPlusCorners();
             System.out.println(ENVIRONMENT_CHECK_MSG);
             PrintCollection.printEscapeOption();
@@ -307,10 +299,8 @@ public class DragonTreasure implements K
 
             char ansChar = ansString.charAt(0);
             Command charCommand = ValueManager.getCommandWithChar(ansChar);
-            if (charCommand != null)
-            {
-                switch (charCommand)
-                {
+            if (charCommand != null) {
+                switch (charCommand) {
                     case IDE_OPTION:
                         PrintCollection.printLinesWithPlusCorners(110);
 
@@ -338,11 +328,9 @@ public class DragonTreasure implements K
      *
      * @param roomDescArr Descriptions assigned to the list of rooms.
      */
-    private void assignDescriptions(String[] roomDescArr)
-    {
+    private void assignDescriptions(String[] roomDescArr) {
         if (roomDescArr.length >= this.roomArr.length)
-            for (int i = 0; i < this.roomArr.length; i++)
-            {
+            for (int i = 0; i < this.roomArr.length; i++) {
                 this.roomArr[i].setRoomDesc(roomDescArr[i]);
             }
     }

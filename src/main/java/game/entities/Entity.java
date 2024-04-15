@@ -8,61 +8,54 @@ import game.items.Keyring;
 import game.items.consumables.Consumable;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Represents an entity in the game with various attributes expected to be
  * inherited by non-abstract classes.
  */
-public abstract class Entity implements Printable
-{
+public abstract class Entity implements Printable {
     /**
      * Name of the entity.
      */
     protected final String name;
-
-    /**
-     * The entity's health in points.
-     */
-    protected int healthPoints;
-
-    /**
-     * The maximal damage output of the entity.
-     */
-    protected int maxDamage;
-
     /**
      * Description of the entity.
      */
     private final String desc;
-
+    /**
+     * The items which the entity possesses.
+     */
+    private final ArrayList<Item> items;
+    /**
+     * The consumables which the entity possesses.
+     */
+    private final ArrayList<Consumable> consumables;
+    /**
+     * The keyring which the entity possesses.
+     */
+    private final Keyring keyring;
+    /**
+     * The entity's health in points.
+     */
+    protected int healthPoints;
+    /**
+     * The maximal damage output of the entity.
+     */
+    protected int maxDamage;
     /**
      * {@code true} if the entity is alive. Otherwise {@code false}.
      */
     private boolean isAlive;
 
     /**
-     * The items which the entity possesses.
-     */
-    private final ArrayList<Item> items;
-
-    /**
-     * The consumables which the entity possesses.
-     */
-    private final ArrayList<Consumable> consumables;
-
-    /**
-     * The keyring which the entity possesses.
-     */
-    private final Keyring keyring;
-
-    /**
-     * @param name Name of the entity.
-     * @param desc Description of the entity.
-     * @param healthPoints The entity's health-points in natural
-     *         numbers.
-     * @param maxDamage Maximal damage output of the entity.
+     * @param name            Name of the entity.
+     * @param desc            Description of the entity.
+     * @param healthPoints    The entity's health-points in natural
+     *                        numbers.
+     * @param maxDamage       Maximal damage output of the entity.
      * @param ownsConsumables {@code true} if entity owns consumables.
-     * @param ownsKeyring {@code true} if entity owns keyring.
+     * @param ownsKeyring     {@code true} if entity owns keyring.
      * @throws IllegalArgumentException If a value equal to or less than zero is
      *                                  entered as value for the health-points
      *                                  or max. damage.
@@ -72,8 +65,7 @@ public abstract class Entity implements Printable
                   int healthPoints,
                   int maxDamage,
                   boolean ownsConsumables,
-                  boolean ownsKeyring) throws IllegalArgumentException
-    {
+                  boolean ownsKeyring) throws IllegalArgumentException {
         this.name = name;
         this.desc = desc;
 
@@ -93,8 +85,7 @@ public abstract class Entity implements Printable
     }
 
     public Entity(String name, String desc, int healthPoints, int maxDamage)
-            throws IllegalArgumentException
-    {
+            throws IllegalArgumentException {
         this(name, desc, healthPoints, maxDamage, false, false);
     }
 
@@ -103,20 +94,16 @@ public abstract class Entity implements Printable
      *
      * @param c Command assigned to the consumable for use.
      */
-    public void useConsumablesWithCommand(char c)
-    {
-        ArrayList<Consumable> consumedItems = new ArrayList<>();
-        for (Consumable consumable : this.consumables)
-        {
-            if (c == consumable.getUseCommand())
-            {
+    public void useConsumablesWithCommand(char c) {
+        Iterator<Consumable> consumableIterator = consumables.iterator();
+
+        while (consumableIterator.hasNext()) {
+            Consumable consumable = consumableIterator.next();
+
+            if (c == consumable.getUseCommand()) {
                 consumable.applyEffect(this);
-                consumedItems.add(consumable);
+                consumableIterator.remove();
             }
-        }
-        for (Consumable consumable : consumedItems)
-        {
-            this.consumables.remove(consumable);
         }
     }
 
@@ -125,122 +112,106 @@ public abstract class Entity implements Printable
      * the room in question.
      *
      * @param room The room in which the door expected to be opened with
-     *         the key leads to.
+     *             the key leads to.
      * @return {@code true} if the entity has a key for opening a door to the
-     *         expected room. {@code false} otherwise.
+     * expected room. {@code false} otherwise.
      */
-    public boolean hasKeyForRoom(Room room)
-    {
-        for (Key key : this.keyring.getKeys())
-        {
-            if (key.getRoomId() == room.getRoomID()) return true;
-        }
-        return false;
+    public boolean hasKeyForRoom(Room room) {
+        return this.keyring.getKeys()
+                .stream()
+                .anyMatch(key -> key.getRoomId() == room.getRoomID());
     }
 
     /**
      * @return Name of the entity.
      */
-    public String getName()
-    {
+    public String getName() {
         return this.name;
     }
 
     /**
      * @return Description of the entity.
      */
-    public String getDesc()
-    {
+    public String getDesc() {
         return this.desc;
     }
 
     /**
      * @return Entity's health-points.
      */
-    public int getHealthPoints()
-    {
+    public int getHealthPoints() {
         return this.healthPoints;
+    }
+
+    /**
+     * @param healthPoints Entity's new health-point amount.
+     */
+    public void setHealthPoints(int healthPoints) {
+        this.healthPoints = Math.max(healthPoints, 0);
+        if (this.healthPoints <= 0) this.isAlive = false;
     }
 
     /**
      * @return Entity's max damage output.
      */
-    public int getMaxDamage()
-    {
+    public int getMaxDamage() {
         return this.maxDamage;
+    }
+
+    /**
+     * @param maxDamage Entity's new max damage output.
+     */
+    public void setMaxDamage(int maxDamage) {
+        this.maxDamage = maxDamage;
     }
 
     /**
      * @return {@code true} if entity is alive. {@code false} otherwise.
      */
-    public boolean isAlive()
-    {
+    public boolean isAlive() {
         return this.isAlive;
     }
 
     /**
      * @return Items owned by the entity.
      */
-    public ArrayList<Item> getItems()
-    {
+    public ArrayList<Item> getItems() {
         return this.items;
     }
 
     /**
      * @return Consumables owned by the entity.
      */
-    public ArrayList<Consumable> getConsumables()
-    {
+    public ArrayList<Consumable> getConsumables() {
         return this.consumables;
-    }
-
-    /**
-     * @param healthPoints Entity's new health-point amount.
-     */
-    public void setHealthPoints(int healthPoints)
-    {
-        this.healthPoints = Math.max(healthPoints, 0);
-        if (this.healthPoints <= 0) this.isAlive = false;
-    }
-
-    /**
-     * @param maxDamage Entity's new max damage output.
-     */
-    public void setMaxDamage(int maxDamage)
-    {
-        this.maxDamage = maxDamage;
     }
 
     /**
      * @param item Item to be added to entity's list of items.
      */
-    public void addItem(Item item)
-    {
+    public void addItem(Item item) {
         this.items.add(item);
     }
 
     /**
      * @param item Item to be removed from entity's list of items.
      */
-    public void removeItem(Item item)
-    {
+    public void removeItem(Item item) {
         this.items.remove(item);
     }
 
     /**
      * @param consumable Consumable to be added to entity's list of
-     *         consumables.
+     *                   consumables.
      */
-    public void addConsumable(Consumable consumable)
-    {
+    public void addConsumable(Consumable consumable) {
         this.consumables.add(consumable);
     }
 
     /**
      * @param key Key to be added to entity's keyring.
      */
-    public void giveKey(Key key)
-    {
+    public void giveKey(Key key) {
         this.keyring.addKey(key);
     }
 }

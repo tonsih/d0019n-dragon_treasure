@@ -1,19 +1,19 @@
 package game.data;
 
+import java.util.Arrays;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * This class takes care of managing values such as position strings and
  * direction characters by generating different types of output.
  */
-public class ValueManager implements K
-{
+public class ValueManager implements K {
     /**
      * A private no-arg constructor for the class. Prevents initiation of an
      * instance.
      */
-    private ValueManager()
-    {
+    private ValueManager() {
     }
 
     /**
@@ -24,14 +24,13 @@ public class ValueManager implements K
      * @throws Exception If the provided character is not a valid
      *                   position/direction.
      */
-    public static String generatePosString(char c) throws Exception
-    {
-        for (Map.Entry<String, Character> entry : DIRECTIONS.entrySet())
-        {
-            if (c == entry.getValue()) return entry.getKey();
-        }
-
-        throw new Exception(c + " is not a valid direction [" + directionCommandsToString() + "]");
+    public static String generatePosString(char c) throws Exception {
+        return DIRECTIONS.entrySet()
+                .stream()
+                .filter(entry -> entry.getValue() == c)
+                .map(Map.Entry::getKey)
+                .findFirst()
+                .orElseThrow(() -> new InvalidDirectionException(c));
     }
 
     /**
@@ -39,15 +38,12 @@ public class ValueManager implements K
      *
      * @param c Provided direction-character.
      * @return {@code true} if the provided character is a direction.
-     *         {@code false} otherwise.
+     * {@code false} otherwise.
      */
-    public static boolean charIsDirection(char c)
-    {
-        for (char direction : DIRECTIONS.values())
-        {
-            if (direction == c) return true;
-        }
-        return false;
+    public static boolean charIsDirection(char c) {
+        return DIRECTIONS.values()
+                .stream()
+                .anyMatch(direction -> direction == c);
     }
 
     /**
@@ -55,16 +51,11 @@ public class ValueManager implements K
      *
      * @return A string for all the directions, {@code null} otherwise.
      */
-    public static String directionCommandsToString()
-    {
-        StringBuilder directionString = new StringBuilder();
-
-        for (char c : DIRECTIONS.values()) directionString.append(c)
-                .append(",");
-
-        return directionString.length() > 0 ?
-                directionString.substring(0, directionString.length() - 1) :
-                null;
+    public static String directionCommandsToString() {
+        String result = DIRECTIONS.values().stream()
+                .map(String::valueOf)
+                .collect(Collectors.joining(","));
+        return result.isEmpty() ? null : result;
     }
 
     /**
@@ -72,14 +63,18 @@ public class ValueManager implements K
      *
      * @param ans char provided by the user
      * @return Command for the provided char if such exists, returns
-     *         {@code null} otherwise.
+     * {@code null} otherwise.
      */
-    public static Command getCommandWithChar(char ans)
-    {
-        for (Command c : Command.values())
-        {
-            if (ans == c.commandValue) return c;
+    public static Command getCommandWithChar(char ans) {
+        return Arrays.stream(Command.values())
+                .filter(c -> c.commandValue == ans)
+                .findFirst()
+                .orElse(null);
+    }
+
+    private static class InvalidDirectionException extends Exception {
+        public InvalidDirectionException(char c) {
+            super(c + " is not a valid direction [" + directionCommandsToString() + "]");
         }
-        return null;
     }
 }

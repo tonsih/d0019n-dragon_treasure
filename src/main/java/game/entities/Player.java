@@ -5,13 +5,13 @@ import game.data.PrintCollection;
 import game.items.treasures.Treasure;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class represents a player-entity with which the user navigates through
  * the game layout and engages in battles with.
  */
-public class Player extends Entity implements K
-{
+public class Player extends Entity implements K {
     /**
      * Player's treasures.
      */
@@ -25,8 +25,7 @@ public class Player extends Entity implements K
     /**
      * @param name Player's name.
      */
-    public Player(String name)
-    {
+    public Player(String name) {
         super(name,
                 PLAYER_DESC,
                 INITIAL_PLAYER_HP,
@@ -47,136 +46,148 @@ public class Player extends Entity implements K
      * biggest length. This length becomes the value used to determine how wide
      * the printed box will be.
      *
-     * @param title The title printed out on the title row in the box.
+     * @param title             The title printed out on the title row in the box.
      * @param treasuresIncluded Option to also print player's treasures,
-     *         their values and the total value inside the printed box.
-     *         {@code true} to print the treasures {@code false} to not do
-     *         that.
+     *                          their values and the total value inside the printed box.
+     *                          {@code true} to print the treasures {@code false} to not do
+     *                          that.
      */
-    public void printPlayerInfo(String title, boolean treasuresIncluded)
-    {
-        String containerPipe = "|";
-        String[] containerRows = new String[]{String.format("%s", title),
-                String.format("%s: %s",
-                        CONTAINER_LABELS.get("NAME"),
-                        this.name), String.format("%s: %d",
+    public void printPlayerInfo(String title, boolean treasuresIncluded) {
+        List<String> containerRows = new ArrayList<>();
+        containerRows.add(formatRow(title));
+        containerRows.add(formatRow(String.format("%s: %s",
+                CONTAINER_LABELS.get("NAME"),
+                this.name)));
+        containerRows.add(formatRow(String.format("%s: %d",
                 CONTAINER_LABELS.get("HP"),
-                this.healthPoints), String.format("%s: %d",
+                this.healthPoints)));
+        containerRows.add(formatRow(String.format("%s: %d",
                 CONTAINER_LABELS.get("MAX_DMG"),
-                this.maxDamage), String.format("%s: %d",
+                this.maxDamage)));
+        containerRows.add(formatRow(String.format("%s: %d",
                 CONTAINER_LABELS.get("MONSTERS_KILLED"),
-                this.totalMonstersKilled)};
+                this.totalMonstersKilled)));
 
-        for (int i = 0; i < containerRows.length; i++)
-        {
-            containerRows[i] = containerPipe + " " + containerRows[i];
+        if (treasuresIncluded) {
+            addTreasureInfo(containerRows);
         }
 
-        if (treasuresIncluded)
-        {
-            String[] tempContainers;
-            int tempLength = containerRows.length + this.treasures.size();
-
-            if (this.treasures.size() > 0)
-            {
-                tempContainers = new String[tempLength + 4];
-                tempContainers[tempContainers.length - 2] = containerPipe;
-                tempContainers[tempContainers.length - 1] = String.format(
-                        "%s %s: %d %s",
-                        containerPipe,
-                        CONTAINER_LABELS.get("TOTAL_VALUE"),
-                        this.getTreasuresTotalValue(),
-                        CURRENCY);
-            } else tempContainers = new String[tempLength + 2];
-
-            tempContainers[containerRows.length] = containerPipe;
-            tempContainers[containerRows.length + 1] =
-                    this.treasures.size() > 0 ? containerPipe + " " +
-                            CONTAINER_LABELS.get("TREASURES") + ":" :
-                            containerPipe + " " +
-                                    CONTAINER_LABELS.get("NO_TREASURES");
-
-            System.arraycopy(containerRows,
-                    0,
-                    tempContainers,
-                    0,
-                    containerRows.length);
-
-            for (int i = 0; i < this.treasures.size(); i++)
-            {
-                Treasure treasure = this.treasures.get(i);
-                tempContainers[containerRows.length + 2 + i] = String.format(
-                        "%s %s (%s: %d %s)",
-                        containerPipe,
-                        treasure.getName(),
-                        CONTAINER_LABELS.get("VALUE"),
-                        treasure.getValue(),
-                        CURRENCY);
-            }
-            containerRows = tempContainers;
-        }
-        int boxWidth = containerRows[0].length() + containerPipe.length();
-
-        for (String s : containerRows)
-        {
-            if (s.length() + containerPipe.length() > boxWidth)
-            {
-                boxWidth = s.length() + containerPipe.length();
-            }
-        }
-        PrintCollection.printLinesWithPlusCorners(boxWidth - 1);
-        int amountOfSpaces = boxWidth - containerRows[0].length();
-        System.out.print(containerRows[0]);
-        PrintCollection.printSpaces(amountOfSpaces);
-        System.out.println(containerPipe);
-        PrintCollection.printLinesWithPlusCorners(boxWidth - 1);
-
-        for (int i = 1; i < containerRows.length; i++)
-        {
-            amountOfSpaces = boxWidth - containerRows[i].length();
-            System.out.print(containerRows[i]);
-            PrintCollection.printSpaces(amountOfSpaces);
-            System.out.println(containerPipe);
-        }
-        PrintCollection.printLinesWithPlusCorners(boxWidth - 1);
+        int boxWidth = calculateMaxWidth(containerRows) + 2;
+        printBox(containerRows, boxWidth);
     }
 
-    public void printPlayerInfo(String title)
-    {
+    /**
+     * Formats the given content into a row by prefixing it with a vertical bar.
+     *
+     * @param content The content to format as a row in the box.
+     * @return A formatted string representing a row in the box.
+     */
+    private String formatRow(String content) {
+        return "| " + content;
+    }
+
+    /**
+     * Adds information about the player's treasures to the list of rows.
+     * This includes each treasure's name and value, and optionally the total value.
+     *
+     * @param rows The list of rows to which treasure information will be added.
+     */
+    private void addTreasureInfo(List<String> rows) {
+        if (this.treasures.isEmpty()) {
+            rows.add(formatRow(CONTAINER_LABELS.get("NO_TREASURES")));
+            return;
+        }
+
+        rows.add(formatRow(CONTAINER_LABELS.get("TREASURES") + ":"));
+        for (Treasure treasure : this.treasures) {
+            String treasureInfo = String.format("%s (%s: %d %s)",
+                    treasure.getName(),
+                    CONTAINER_LABELS.get("VALUE"),
+                    treasure.getValue(),
+                    CURRENCY);
+            rows.add(formatRow(treasureInfo));
+        }
+        rows.add(formatRow(String.format("%s: %d %s",
+                CONTAINER_LABELS.get("TOTAL_VALUE"),
+                getTreasuresTotalValue(),
+                CURRENCY)));
+    }
+
+    /**
+     * Calculates the maximum width required for the box based on the length of the longest row.
+     *
+     * @param rows The list of rows to be displayed inside the box.
+     * @return The maximum width required for the box.
+     */
+    private int calculateMaxWidth(List<String> rows) {
+        int maxWidth = 0;
+        for (String row : rows) {
+            maxWidth = Math.max(maxWidth, row.length());
+        }
+        return maxWidth;
+    }
+
+    /**
+     * Prints a box around the provided rows of text, adjusting the width to the widest row.
+     * The box is printed with '+' at the corners and '-' for the horizontal lines.
+     *
+     * @param rows     The rows of text to enclose in the box.
+     * @param boxWidth The calculated width of the box to ensure all text fits.
+     */
+    public void printBox(List<String> rows, int boxWidth) {
+        PrintCollection.printLinesWithPlusCorners(boxWidth);
+        for (int i = 0; i < rows.size(); i++) {
+            System.out.print(rows.get(i));
+            PrintCollection.printSpaces(boxWidth - rows.get(i).length() + 1);
+            System.out.println("|");
+            if (i == 0) {
+                PrintCollection.printCharAmountOfTimes('+', 1);
+                PrintCollection.printCharAmountOfTimes('-', boxWidth);
+                System.out.println('+');
+            }
+        }
+        PrintCollection.printLinesWithPlusCorners(boxWidth);
+    }
+
+    /**
+     * Overloaded method to print player information without including treasures by default.
+     *
+     * @param title The title printed out on the title row in the box.
+     */
+    public void printPlayerInfo(String title) {
         printPlayerInfo(title, false);
     }
 
     /**
      * @return Total value of all player's treasures.
      */
-    public int getTreasuresTotalValue()
-    {
-        int totalValue = 0;
-        for (Treasure treasure : this.treasures)
-        {
-            totalValue += treasure.getValue();
-        }
-        return totalValue;
+    public int getTreasuresTotalValue() {
+        return this.treasures.stream()
+                .mapToInt(Treasure::getValue)
+                .sum();
     }
 
     /**
      * @param treasure Treasure to be added to the player's treasure
-     *         array.
+     *                 array.
      */
-    public void addTreasure(Treasure treasure)
-    {
+    public void addTreasure(Treasure treasure) {
         this.treasures.add(treasure);
     }
 
     /**
      * Increment the total amount of monsters killed by one.
      */
-    public void addMonsterKilled()
-    {
+    public void addMonsterKilled() {
         this.totalMonstersKilled++;
     }
 
-    @Override public void printObject()
-    {
+    /**
+     * An empty implementation of the printObject method from the base class.
+     * Intended to be overridden by subclasses if specific print functionality is needed.
+     */
+    @Override
+    public void printObject() {
+        // Intentionally left empty.
     }
 }

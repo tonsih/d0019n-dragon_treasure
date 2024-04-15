@@ -169,7 +169,7 @@ public class Dungeon implements K
                         this.visualEffectManager.clearConsole();
                         break whileLoop;
                     case PICKUP_ITEM:
-                        if (this.currentRoom.getItems().size() > 0 ||
+                        if (!this.currentRoom.getItems().isEmpty() ||
                                 this.currentRoom.getKeyring().size() > 0)
                         {
                             printRoomDescEnabled = false;
@@ -359,7 +359,6 @@ public class Dungeon implements K
      */
     private void printAvailableDoors() throws Exception
     {
-
         for (Door currentDoor : this.currentRoom.getDoors())
         {
             char doorPositionChar = currentDoor.getPosition();
@@ -367,32 +366,40 @@ public class Dungeon implements K
                     ValueManager.generatePosString(doorPositionChar)
                             .toLowerCase();
 
+            StringBuilder messageBuilder = new StringBuilder();
+
             if (currentDoor.isLocked())
             {
-                String tempStr = "Du ser en låst dörr";
-                if (currentDoor.isExit()) tempStr += " mot en utgång";
-                System.out.printf("%s i %s [%c]",
-                        tempStr,
-                        doorPositionStr,
-                        doorPositionChar);
+                messageBuilder.append("Du ser en låst dörr");
+                if (currentDoor.isExit()) messageBuilder.append(" mot en utgång");
+
+                messageBuilder.append(" i ").append(doorPositionStr)
+                        .append(" [").append(doorPositionChar).append("]");
 
                 if (this.player.hasKeyForRoom(currentDoor.getPointsToRoom()))
                 {
-                    System.out.print(" (Du har en nyckel till dörren!)");
+                    messageBuilder.append(" (Du har en nyckel till dörren!)");
                 }
-            } else
-            {
-                if (currentDoor.isExit()) System.out.printf(
-                        "Du ser en utgång %sut [%c]",
-                        doorPositionStr,
-                        doorPositionChar);
-                else System.out.printf("Du kan gå %sut [%c]",
-                        doorPositionStr,
-                        doorPositionChar);
             }
-            System.out.println();
+            else
+            {
+                if (currentDoor.isExit())
+                {
+                    messageBuilder.append("Du ser en utgång ")
+                            .append(doorPositionStr).append("ut [")
+                            .append(doorPositionChar).append("]");
+                }
+                else
+                {
+                    messageBuilder.append("Du kan gå ")
+                            .append(doorPositionStr).append("ut [")
+                            .append(doorPositionChar).append("]");
+                }
+            }
+            System.out.println(messageBuilder);
         }
     }
+
 
     /**
      * Handles the processing of the items in the current room, including
