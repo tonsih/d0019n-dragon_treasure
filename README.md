@@ -1,4 +1,4 @@
-# DragonTreasure (D0019N - Assignment 3)
+# Dragon Treasure (D0019N - Assignment 3)
 
 This project was developed in connection with the course D0019N - "Software
 Development with Java" provided by Luleå University of Technology.
